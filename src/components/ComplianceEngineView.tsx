@@ -39,6 +39,11 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
     'Article 9 & 21': true,
   });
 
+  const art5 = report.articles.find(a => a.articleNumber === 'Article 5');
+  const pcrArt = report.articles.find(a => a.articleNumber === 'Article 7');
+  const voidArt = report.articles.find(a => a.articleNumber === 'Article 9 & 21');
+  const hasPlastic = item.components.some(c => c.materialType === 'plastic');
+
   const toggleArticle = (art: string) => {
     setExpandedArticles(prev => ({ ...prev, [art]: !prev[art] }));
   };
@@ -121,7 +126,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
               <Recycle className="h-4 w-4 text-emerald-500" />
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="font-display text-3xl font-extrabold text-emerald-500">
+              <span className={`font-display text-3xl font-extrabold ${['A', 'B', 'C'].includes(report.recyclabilityGrade) ? 'text-emerald-500' : 'text-red-500'}`}>
                 Grade {report.recyclabilityGrade}
               </span>
               <span className="font-mono text-xs dark:text-slate-400 text-slate-500">
@@ -132,10 +137,17 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
               {t.compliance.gradeDesc}
             </p>
           </div>
-          <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-semibold">
-            <CheckCircle2 className="h-3 w-3" />
-            <span>{language === 'fr' ? 'Seuil 2030 (Min. C) Atteint' : '2030 Threshold (Min. C) Met'}</span>
-          </div>
+          {['A', 'B', 'C'].includes(report.recyclabilityGrade) ? (
+            <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-semibold">
+              <CheckCircle2 className="h-3 w-3" />
+              <span>{language === 'fr' ? 'Seuil 2030 (Min. C) Atteint' : '2030 Threshold (Min. C) Met'}</span>
+            </div>
+          ) : (
+            <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono text-red-600 dark:text-red-400 flex items-center gap-1 font-semibold">
+              <XCircle className="h-3 w-3" />
+              <span>{language === 'fr' ? 'Sous le seuil 2030 (Min. C)' : 'Below 2030 threshold (Min. C)'}</span>
+            </div>
+          )}
         </div>
 
         {/* Void Space Ratio Card (Art. 9 & 21) */}
@@ -149,9 +161,9 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
             </div>
             <div className="mt-3 flex items-baseline gap-2">
               <span className={`font-display text-3xl font-extrabold ${
-                item.dimensions.voidSpaceRatioPercent <= 50 ? 'text-[#F97316]' : 'text-red-500'
+                voidArt?.status === 'critical' ? 'text-red-500' : (voidArt?.status === 'missing' ? 'text-slate-400' : 'text-[#F97316]')
               }`}>
-                {item.dimensions.voidSpaceRatioPercent}%
+                {voidArt?.status === 'missing' ? '—' : `${item.dimensions.voidSpaceRatioPercent}%`}
               </span>
               <span className="font-mono text-xs dark:text-slate-400 text-slate-500">
                 / 50% max
@@ -162,7 +174,12 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
             </p>
           </div>
           <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono flex items-center gap-1 font-semibold">
-            {item.dimensions.voidSpaceRatioPercent <= 50 ? (
+            {voidArt?.status === 'missing' ? (
+              <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                <AlertTriangle className="h-3 w-3" />
+                {language === 'fr' ? 'Dimensions ou volume à renseigner' : 'Dimensions or volume required'}
+              </span>
+            ) : voidArt?.status === 'compliant' ? (
               <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 className="h-3 w-3" />
                 {language === 'fr' ? 'Conforme Art. 21 (≤ 50%)' : 'Complies with Art. 21 (≤ 50%)'}
@@ -197,9 +214,17 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
               {t.compliance.recycledTargets}
             </p>
           </div>
-          <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono text-[#8B5CF6] flex items-center gap-1 font-semibold">
-            <CheckCircle2 className="h-3 w-3" />
-            <span>{language === 'fr' ? 'Certifié EuCertPlast / ISCC+' : 'EuCertPlast / ISCC+ Certified'}</span>
+          <div className={`mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono flex items-center gap-1 font-semibold ${
+            pcrArt?.status === 'compliant' ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
+          }`}>
+            {pcrArt?.status === 'compliant' ? <CheckCircle2 className="h-3 w-3" /> : <AlertTriangle className="h-3 w-3" />}
+            <span>
+              {!hasPlastic
+                ? (language === 'fr' ? 'Sans objet : pas de plastique' : 'Not applicable: no plastic')
+                : pcrArt?.status === 'compliant'
+                  ? (language === 'fr' ? 'Objectif 2030 atteint' : '2030 target met')
+                  : (language === 'fr' ? 'Sous l\'objectif 2030' : 'Below 2030 target')}
+            </span>
           </div>
         </div>
 
@@ -213,20 +238,30 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
               <ShieldAlert className="h-4 w-4 text-emerald-500" />
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="font-display text-3xl font-extrabold text-emerald-500">
-                {item.heavyMetals ? item.heavyMetals.total_mg_kg : '—'}
+              <span className={`font-display text-3xl font-extrabold ${
+                art5?.status === 'compliant' ? 'text-emerald-500' : (art5?.status === 'critical' ? 'text-red-500' : 'text-slate-400')
+              }`}>
+                {item.heavyMetals?.total_mg_kg ?? '—'}
               </span>
               <span className="font-mono text-xs dark:text-slate-400 text-slate-500">
-                mg/kg & {item.pfas?.declaredFree ? 'PFAS-free' : 'PFAS ?'}
+                mg/kg & {!item.pfas ? 'PFAS ?' : (art5?.status === 'compliant' ? 'PFAS OK' : 'PFAS ?')}
               </span>
             </div>
             <p className="text-[11px] dark:text-slate-400 text-slate-600 mt-1">
               {t.compliance.heavyMetalsLimit}
             </p>
           </div>
-          <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-semibold">
-            <CheckCircle2 className="h-3 w-3" />
-            <span>{language === 'fr' ? 'Rapport Labo Conforme' : 'Conform Lab Test Report'}</span>
+          <div className={`mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono flex items-center gap-1 font-semibold ${
+            art5?.status === 'compliant' ? 'text-emerald-600 dark:text-emerald-400' : (art5?.status === 'critical' ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400')
+          }`}>
+            {art5?.status === 'compliant' ? <CheckCircle2 className="h-3 w-3" /> : (art5?.status === 'critical' ? <XCircle className="h-3 w-3" /> : <AlertTriangle className="h-3 w-3" />)}
+            <span>
+              {art5?.status === 'compliant'
+                ? (language === 'fr' ? 'Seuils respectés (rapport labo)' : 'Limits met (lab report)')
+                : art5?.status === 'critical'
+                  ? (language === 'fr' ? 'Seuil dépassé' : 'Limit exceeded')
+                  : (language === 'fr' ? 'Données à compléter' : 'Data to complete')}
+            </span>
           </div>
         </div>
 
@@ -305,10 +340,12 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
               {language === 'fr' ? 'Taux d\'espace vide calculé :' : 'Calculated Void Ratio:'}{' '}
               <strong className="dark:text-white text-slate-900">{item.dimensions.voidSpaceRatioPercent}%</strong>
             </span>
-            <span className={item.dimensions.voidSpaceRatioPercent <= 50 ? 'text-emerald-500 font-bold' : 'text-red-500 font-bold'}>
-              {item.dimensions.voidSpaceRatioPercent <= 50 
-                ? (language === 'fr' ? '✓ CONFORME (≤ 50%)' : '✓ COMPLIANT (≤ 50%)')
-                : (language === 'fr' ? '✕ NON CONFORME (> 50%)' : '✕ NON-COMPLIANT (> 50%)')}
+            <span className={voidArt?.status === 'missing' ? 'text-slate-500 font-bold' : (item.dimensions.voidSpaceRatioPercent <= 50 ? 'text-emerald-500 font-bold' : 'text-red-500 font-bold')}>
+              {voidArt?.status === 'missing'
+                ? (language === 'fr' ? 'À RENSEIGNER' : 'TO BE PROVIDED')
+                : item.dimensions.voidSpaceRatioPercent <= 50
+                  ? (language === 'fr' ? '✓ CONFORME (≤ 50%)' : '✓ COMPLIANT (≤ 50%)')
+                  : (language === 'fr' ? '✕ NON CONFORME (> 50%)' : '✕ NON-COMPLIANT (> 50%)')}
             </span>
           </div>
           <div className="w-full h-3 dark:bg-slate-800 bg-slate-200 rounded-full overflow-hidden p-0.5 border dark:border-slate-700 border-slate-300">

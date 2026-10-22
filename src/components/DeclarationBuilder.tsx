@@ -36,7 +36,8 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
 }) => {
   const t = translations[language];
   const [isEditingManufacturer, setIsEditingManufacturer] = useState(false);
-  const [isOperatorConfirmed, setIsOperatorConfirmed] = useState(true);
+  // The declarant must confirm explicitly; never pre-checked.
+  const [isOperatorConfirmed, setIsOperatorConfirmed] = useState(false);
   const [declarationNumber, setDeclarationNumber] = useState(() => item.declarationNumber || ('EU-DOC-PPWR-2026-' + Math.floor(100000 + Math.random() * 900000)));
   useEffect(() => {
     if (!item.declarationNumber) {
@@ -65,6 +66,10 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
   const generatePdfFile = () => {
     if (!item.heavyMetals || !item.pfas || report.overallStatus !== 'compliant') {
       alert(language === 'fr' ? 'Données manquantes ou non conformité : déclaration bloquée.' : 'Missing data or non-compliance: declaration blocked.');
+      return;
+    }
+    if (!isOperatorConfirmed) {
+      alert(language === 'fr' ? 'Cochez d\'abord la confirmation du déclarant : la déclaration engage sa responsabilité.' : 'Tick the declarant confirmation first: the declaration is issued under their responsibility.');
       return;
     }
     const doc = new jsPDF({

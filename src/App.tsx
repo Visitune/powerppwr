@@ -5,7 +5,7 @@ import { evaluatePackagingCompliance } from './utils/complianceEngine';
 import { loadProducts, saveProduct, deleteProduct } from './utils/storage';
 import { HomeView } from './components/HomeView';
 import { ProductsView } from './components/ProductsView';
-import { Navbar, ActiveTab } from './components/Navbar';
+import { AppShell, ActiveTab } from './components/Navbar';
 import { Quick5MinWorkflow } from './components/Quick5MinWorkflow';
 import { DocumentVault } from './components/DocumentVault';
 import { ComplianceEngineView } from './components/ComplianceEngineView';
@@ -37,10 +37,18 @@ export default function App() {
         for (const p of list) await saveProduct(p);
       }
       setProducts(list);
-      setSelectedProductId(list[0].id);
+      // Restore the last active product (IndexedDB returns records sorted by key, not by use)
+      let lastId = '';
+      try { lastId = localStorage.getItem('powerppwr_selected') || ''; } catch { /* storage unavailable */ }
+      setSelectedProductId(list.some(p => p.id === lastId) ? lastId : list[0].id);
       setLoaded(true);
     })();
   }, []);
+
+  useEffect(() => {
+    if (!loaded || !selectedProductId) return;
+    try { localStorage.setItem('powerppwr_selected', selectedProductId); } catch { /* storage unavailable */ }
+  }, [selectedProductId, loaded]);
 
   const packagingItem = products.find(p => p.id === selectedProductId) || products[0] || samplePackagingPresets[0];
 
@@ -166,28 +174,37 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'dark bg-[#0B1120] text-slate-100' : 'bg-[#F8FAFC] text-slate-900'} flex flex-col font-sans transition-colors duration-200 selection:bg-indigo-500 selection:text-white`}>
-      {/* Top Bar with VisiPilot branding, all Power PPWR tabs, and theme switcher */}
-      <Navbar
+    <div className={`min-h-screen ${theme === 'dark' ? 'dark bg-[#0B1120] text-slate-100' : 'bg-[#F8FAFC] text-slate-900'} font-sans transition-colors duration-200 selection:bg-indigo-500 selection:text-white`}>
+      {/* Left sidebar (collapsible) + slim top bar; content uses the full remaining width */}
+      <AppShell
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
         language={language}
         setLanguage={setLanguage}
         theme={theme}
         setTheme={setTheme}
+        products={products.length ? products : [packagingItem]}
+        selectedProductId={packagingItem.id}
+        onSelectProduct={setSelectedProductId}
         presets={showExamples ? samplePackagingPresets : []}
-        selectedPresetId={''}
-        onSelectPreset={handleSelectPreset}
+        onAddExample={handleSelectPreset}
+        status={complianceReport.overallStatus}
         onExportPdf={handleExportPdf}
-      />
+      >
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-10 2xl:px-14 py-6 lg:py-8">
         {!loaded && <div className="text-center py-10">Chargement...</div>}
         {loaded && saveError && <div className="text-red-500 text-sm mb-2">{saveError}</div>}
         {loaded && (<>
         {currentTab === 'home' && (
-          <HomeView language={language} onNavigate={(tab) => setCurrentTab(tab)} />
+          <HomeView
+            item={packagingItem}
+            report={complianceReport}
+            productCount={products.length}
+            language={language}
+            onNavigate={(tab) => setCurrentTab(tab)}
+          />
         )}
 
         {currentTab === 'products' && (
@@ -287,6 +304,7 @@ export default function App() {
 
       {/* Footer with VisiPilot logo and EUR-Lex references */}
       <Footer language={language} />
+      </AppShell>
     </div>
   );
 }
