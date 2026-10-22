@@ -1,0 +1,6 @@
+{
+  "name": "powerPPWR",
+  "description": "powerPPWR by VisiPilot — EU Packaging Regulation 2025/40 Compliance Engine & Official Declaration of Conformity Generator",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
