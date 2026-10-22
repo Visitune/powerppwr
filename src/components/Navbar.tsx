@@ -18,13 +18,14 @@ import {
   Calculator,
   Settings,
   LifeBuoy,
+  ClipboardList,
   Menu,
   X,
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react';
 
-export type ActiveTab = 'home' | 'products' | 'workflow' | 'vault' | 'compliance' | 'gaps' | 'declaration' | 'roles' | 'pricing' | 'regulatory' | 'settings' | 'guide';
+export type ActiveTab = 'home' | 'products' | 'editor' | 'workflow' | 'vault' | 'compliance' | 'gaps' | 'declaration' | 'roles' | 'pricing' | 'regulatory' | 'settings' | 'guide';
 
 interface AppShellProps {
   currentTab: ActiveTab;
@@ -52,7 +53,7 @@ interface NavEntry {
 
 const STATUS_STYLES: Record<ComplianceStatus, { dot: string; text: string }> = {
   compliant: { dot: 'bg-emerald-500', text: 'text-emerald-700 dark:text-emerald-400' },
-  incomplete: { dot: 'bg-amber-500', text: 'text-amber-700 dark:text-amber-400' },
+  incomplete: { dot: 'bg-amber-500', text: 'text-amber-800 dark:text-amber-400' },
   critical: { dot: 'bg-red-500', text: 'text-red-700 dark:text-red-400' },
   missing: { dot: 'bg-slate-400', text: 'text-slate-600 dark:text-slate-400' },
 };
@@ -101,6 +102,7 @@ export const AppShell: React.FC<AppShellProps> = ({
       items: [
         { tab: 'home', label: fr ? 'Accueil' : 'Home', icon: Home },
         { tab: 'products', label: fr ? 'Mes produits' : 'My products', icon: Package },
+        { tab: 'editor', label: fr ? 'Fiche produit' : 'Product sheet', icon: ClipboardList },
       ],
     },
     {
@@ -145,7 +147,7 @@ export const AppShell: React.FC<AppShellProps> = ({
           type="button"
           onClick={() => go('home')}
           className="flex items-center gap-2.5 min-w-0 group"
-          aria-label={fr ? 'powerPPWR, retour à l\'accueil' : 'powerPPWR, back to home'}
+          aria-label={fr ? 'powerPPWR UE 2025/40, retour à l\'accueil' : 'powerPPWR UE 2025/40, back to home'}
         >
           <span className="flex items-center rounded-lg bg-[#0B1120] border border-slate-800/80 px-2 py-1.5 group-hover:border-[#F97316]/50 transition-colors shrink-0">
             <img src="/logovisipilot-300x81-1.png" alt="VisiPilot" className={`${rail ? 'h-4' : 'h-5'} w-auto object-contain`} />
@@ -153,7 +155,8 @@ export const AppShell: React.FC<AppShellProps> = ({
           {!rail && (
             <span className="flex flex-col items-start min-w-0 leading-tight">
               <span className="font-display text-sm font-extrabold tracking-tight dark:text-white text-slate-900 whitespace-nowrap">powerPPWR</span>
-              <span className="text-[10px] font-mono font-bold text-[#F97316] whitespace-nowrap">UE 2025/40</span>
+              {' '}
+              <span className="text-[10px] font-mono font-bold text-[#9A3412] dark:text-[#FB923C] whitespace-nowrap">UE 2025/40</span>
             </span>
           )}
         </button>
@@ -163,14 +166,16 @@ export const AppShell: React.FC<AppShellProps> = ({
       {!rail ? (
         <div className="px-3 pt-3 pb-1 shrink-0 space-y-2">
           <label className="block">
-            <span className="text-[10px] font-bold uppercase tracking-wider dark:text-slate-500 text-slate-500">
+            <span className="text-[10px] font-bold uppercase tracking-wider dark:text-slate-400 text-slate-600">
               {fr ? 'Produit en cours' : 'Current product'}
             </span>
             <select
               value={selectedProductId}
               onChange={(e) => onSelectProduct(e.target.value)}
-              className="mt-1 w-full text-xs font-semibold dark:bg-slate-900 bg-slate-50 dark:text-slate-100 text-slate-800 border dark:border-slate-700 border-slate-300 rounded-lg px-2.5 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer"
+              disabled={products.length === 0}
+              className="mt-1 w-full text-xs font-semibold dark:bg-slate-900 bg-slate-50 dark:text-slate-100 text-slate-800 border dark:border-slate-700 border-slate-300 rounded-lg px-2.5 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
+              {products.length === 0 && <option value="">{fr ? 'Aucun produit' : 'No product'}</option>}
               {products.map(p => (
                 <option key={p.id} value={p.id}>{p.name}</option>
               ))}
@@ -192,7 +197,7 @@ export const AppShell: React.FC<AppShellProps> = ({
         {groups.map(group => (
           <div key={group.title}>
             {!rail ? (
-              <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-wider dark:text-slate-500 text-slate-500">{group.title}</div>
+              <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-wider dark:text-slate-400 text-slate-600">{group.title}</div>
             ) : (
               <div className="mx-3 mb-1 border-t dark:border-slate-800 border-slate-200" />
             )}
@@ -214,7 +219,7 @@ export const AppShell: React.FC<AppShellProps> = ({
                       }`}
                     >
                       {active && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r bg-[#F97316]" aria-hidden="true" />}
-                      <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-[#F97316]' : 'dark:text-slate-400 text-slate-500'}`} />
+                      <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-[#C2410C] dark:text-[#FB923C]' : 'dark:text-slate-400 text-slate-500'}`} />
                       {!rail && <span className="truncate text-left flex-1">{item.label}</span>}
                       {!rail && item.step && (
                         <span className={`text-[10px] font-mono font-bold h-4 min-w-4 px-1 rounded flex items-center justify-center ${active ? 'bg-[#F97316]/15 text-[#F97316]' : 'dark:bg-slate-800 bg-slate-100 dark:text-slate-400 text-slate-500'}`}>
@@ -250,9 +255,9 @@ export const AppShell: React.FC<AppShellProps> = ({
             type="button"
             onClick={() => setLanguage(fr ? 'en' : 'fr')}
             className={`flex items-center justify-center gap-1.5 ${rail ? 'w-full' : 'flex-1'} px-2.5 py-1.5 text-xs font-semibold rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-900 bg-slate-50 dark:text-slate-200 text-slate-800 hover:text-indigo-500 transition-colors`}
-            aria-label={fr ? 'Passer en anglais' : 'Switch to French'}
+            aria-label={fr ? 'FR, passer en anglais' : 'EN, switch to French'}
           >
-            <Globe className="h-3.5 w-3.5 text-[#8B5CF6]" />
+            <Globe className="h-3.5 w-3.5 text-[#6D28D9] dark:text-[#A78BFA]" />
             <span>{language.toUpperCase()}</span>
           </button>
           <button
@@ -318,8 +323,8 @@ export const AppShell: React.FC<AppShellProps> = ({
           </button>
 
           <div className="min-w-0 flex items-center gap-2 text-sm">
-            <span className="hidden sm:inline dark:text-slate-500 text-slate-500 truncate">{currentGroup}</span>
-            <span className="hidden sm:inline dark:text-slate-600 text-slate-400" aria-hidden="true">/</span>
+            <span className="hidden sm:inline dark:text-slate-400 text-slate-600 truncate">{currentGroup}</span>
+            <span className="hidden sm:inline dark:text-slate-600 text-slate-600" aria-hidden="true">/</span>
             <span className="font-semibold dark:text-white text-slate-900 truncate">{currentLabel}</span>
           </div>
 
@@ -331,7 +336,7 @@ export const AppShell: React.FC<AppShellProps> = ({
             <button
               type="button"
               onClick={onExportPdf}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-orange-500 to-indigo-600 hover:from-orange-600 hover:to-indigo-700 text-white shadow-sm shadow-orange-500/20 transition-all whitespace-nowrap active:scale-[0.98]"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-orange-700 to-indigo-700 hover:from-orange-800 hover:to-indigo-800 text-white shadow-sm shadow-orange-500/20 transition-all whitespace-nowrap active:scale-[0.98]"
             >
               <Download className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">{t.nav.generateDoc}</span>

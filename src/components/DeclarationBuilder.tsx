@@ -407,7 +407,7 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <div className="h-[2px] w-8 bg-[#F97316]" />
-            <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
               OFFICIAL EU DELIVERABLE
             </span>
           </div>
@@ -415,7 +415,7 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
             <h1 className="font-display text-2xl font-extrabold tracking-tight dark:text-white text-slate-900">
               {t.declaration.title}
             </h1>
-            <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-500 dark:text-indigo-400 px-2 py-0.5 rounded font-mono">
+            <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-700 dark:text-indigo-400 px-2 py-0.5 rounded font-mono">
               Annexe VII
             </span>
           </div>
@@ -437,13 +437,13 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
             onClick={exportJsonData}
             className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-800 bg-white hover:bg-slate-100 dark:hover:bg-slate-700 dark:text-slate-200 text-slate-700 transition-colors shadow-xs"
           >
-            <FileJson className="h-3.5 w-3.5 text-[#8B5CF6]" />
+            <FileJson className="h-3.5 w-3.5 text-[#6D28D9] dark:text-[#A78BFA]" />
             <span>{t.declaration.downloadJson}</span>
           </button>
 
           <button
             onClick={generatePdfFile}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-orange-500 to-indigo-600 hover:from-orange-600 hover:to-indigo-700 text-white shadow-md shadow-orange-500/20 transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-orange-700 to-indigo-700 hover:from-orange-800 hover:to-indigo-800 text-white shadow-md shadow-orange-500/20 transition-all"
           >
             <Download className="h-3.5 w-3.5" />
             <span>{t.declaration.printPdf}</span>
@@ -472,7 +472,7 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
         <div className="rounded-xl border dark:border-indigo-700/60 border-indigo-200 dark:bg-indigo-950/20 bg-indigo-50/70 p-5 shadow-xs space-y-4 no-print">
           <div className="flex items-center justify-between border-b dark:border-indigo-800/40 border-indigo-200 pb-2">
             <h3 className="text-sm font-bold dark:text-white text-slate-900 flex items-center gap-2">
-              <Building2 className="h-4 w-4 text-[#8B5CF6]" />
+              <Building2 className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
               <span>{language === 'fr' ? 'Édition des Données Fabricant (Article 13)' : 'Edit Manufacturer Details (Article 13)'}</span>
             </h3>
           </div>
@@ -526,7 +526,7 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
             <div className="flex items-end">
               <button
                 onClick={handleSaveManufacturer}
-                className="w-full py-1.5 px-3 bg-gradient-to-r from-orange-500 to-indigo-600 hover:from-orange-600 hover:to-indigo-700 text-white rounded text-xs font-semibold flex items-center justify-center gap-1.5"
+                className="w-full py-1.5 px-3 bg-gradient-to-r from-orange-700 to-indigo-700 hover:from-orange-800 hover:to-indigo-800 text-white rounded text-xs font-semibold flex items-center justify-center gap-1.5"
               >
                 <Save className="h-3.5 w-3.5" />
                 <span>{t.common.save}</span>
@@ -540,13 +540,13 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
       <div className="rounded-xl border dark:border-amber-500/40 border-amber-300 dark:bg-amber-950/20 bg-amber-50 p-4 shadow-sm no-print space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-start sm:items-center gap-2.5">
-            <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 shrink-0 mt-0.5 sm:mt-0">
+            <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-800 dark:text-amber-400 border border-amber-500/30 shrink-0 mt-0.5 sm:mt-0">
               <ShieldAlert className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-amber-200">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-amber-200">
                 {language === 'fr' ? 'Règle Juridique : Responsabilité Déclarant & Rôle de Power PPWR' : 'Legal Rule: Declarant Liability & Role of Power PPWR'}
-              </h4>
+              </h2>
               <p className="text-xs text-amber-800 dark:text-amber-300/90 leading-relaxed mt-0.5">
                 {language === 'fr'
                   ? 'VisiPilot met à disposition cet outil pour faciliter le travail et accélérer la préparation de vos déclarations PPWR. La déclaration finale n\'est jamais émise au nom de VisiPilot : elle est générée par Power PPWR et relève sous tous les angles de la responsabilité légale exclusive de votre société en qualité de client déclarant, qui doit obligatoirement vérifier et finaliser l\'ensemble des données.'
@@ -557,10 +557,10 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
           <div className="shrink-0 flex items-center gap-2">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold ${
               isOperatorConfirmed 
-                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' 
-                : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30'
+                ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30' 
+                : 'bg-amber-500/10 text-amber-800 dark:text-amber-400 border border-amber-500/30'
             }`}>
-              {isOperatorConfirmed ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> : <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />}
+              {isOperatorConfirmed ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" /> : <AlertTriangle className="h-3.5 w-3.5 text-amber-800 dark:text-amber-400" />}
               <span>{isOperatorConfirmed ? t.declaration.operatorValidatedBadge : t.declaration.operatorPendingBadge}</span>
             </span>
           </div>
@@ -572,7 +572,7 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
             type="checkbox"
             checked={isOperatorConfirmed}
             onChange={e => setIsOperatorConfirmed(e.target.checked)}
-            className="mt-0.5 rounded border-amber-400 text-amber-600 focus:ring-amber-500 h-4 w-4 shrink-0"
+            className="mt-0.5 rounded border-amber-400 text-amber-800 dark:text-amber-400 focus:ring-amber-500 h-4 w-4 shrink-0"
           />
           <span className="text-xs font-medium text-amber-950 dark:text-amber-100 leading-snug">
             {t.declaration.operatorCheckLabel} ({item.manufacturer.companyName})
@@ -586,10 +586,10 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
         {/* Certificate Top Header - Power PPWR */}
         <div className="p-8 border-b dark:border-slate-800 border-slate-200 text-center space-y-3 dark:bg-gradient-to-b dark:from-slate-900 dark:to-[#111827] bg-gradient-to-b from-slate-50 to-white print:from-white print:to-white">
           <div className="flex items-center justify-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 print:border-slate-400 print:text-black">
-              <Zap className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/10 text-amber-800 dark:text-amber-400 border border-amber-500/30 print:border-slate-400 print:text-black">
+              <Zap className="h-3.5 w-3.5 text-amber-800 dark:text-amber-400 shrink-0" />
               <span>{t.declaration.generatedByBadge}</span>
-              <span className="text-slate-400">·</span>
+              <span className="text-slate-600 dark:text-slate-400">·</span>
               <span className="font-sans text-[11px] font-normal dark:text-slate-300 text-slate-600 print:text-black">
                 {language === 'fr' ? 'Outil d\'Assistance Technique Réglementaire' : 'Regulatory Technical Assistance Tool'}
               </span>
@@ -600,13 +600,13 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
             {language === 'fr' ? 'DÉCLARATION UE DE CONFORMITÉ' : 'EU DECLARATION OF CONFORMITY'}
           </h2>
 
-          <p className="text-xs font-mono text-[#F97316] font-bold print:text-slate-700">
+          <p className="text-xs font-mono text-[#C2410C] dark:text-[#FB923C] font-bold print:text-slate-700">
             {language === 'fr' 
               ? 'Établie selon le modèle de l\'Annexe VII du Règlement (UE) 2025/40 (PPWR)' 
               : 'Issued pursuant to Annex VII model of Regulation (EU) 2025/40 (PPWR)'}
           </p>
 
-          <div className="flex items-center justify-center gap-4 text-[11px] font-mono dark:text-slate-400 text-slate-500 pt-1 font-medium flex-wrap">
+          <div className="flex items-center justify-center gap-4 text-[11px] font-mono dark:text-slate-400 text-slate-600 pt-1 font-medium flex-wrap">
             <span>{t.declaration.docNumber} : <strong className="dark:text-white text-slate-900 print:text-black">{declarationNumber}</strong></span>
             <span>·</span>
             <span>Date : <strong className="dark:text-white text-slate-900 print:text-black">{currentDate}</strong></span>
@@ -617,13 +617,13 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
           {/* Prominent Legal Responsibility Notice Box inside Declaration Header */}
           <div className="mx-auto max-w-3xl mt-3 p-3.5 rounded-xl dark:bg-amber-950/25 bg-amber-50/90 border dark:border-amber-700/40 border-amber-200/90 text-left text-xs text-amber-950 dark:text-amber-100 print:border-slate-300 print:bg-white print:text-black space-y-1">
             <div className="flex items-center gap-1.5 font-bold text-[11px] uppercase tracking-wider text-amber-800 dark:text-amber-300 print:text-black">
-              <ShieldAlert className="h-3.5 w-3.5 shrink-0 text-amber-600" />
+              <ShieldAlert className="h-3.5 w-3.5 shrink-0 text-amber-800 dark:text-amber-400" />
               <span>{t.declaration.disclaimerTitle}</span>
             </div>
             <p className="text-[11px] leading-relaxed text-slate-700 dark:text-slate-300 print:text-black">
               {t.declaration.disclaimerNotice}
             </p>
-            <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400 print:text-slate-600">
+            <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-slate-600 dark:text-slate-400 print:text-slate-600">
               <span>Opérateur Économique Responsable : <strong>{item.manufacturer.companyName}</strong></span>
               <span>Statut : {isOperatorConfirmed ? '✓ Validé par le déclarant' : '⚠ Validation client requise'}</span>
             </div>
@@ -640,24 +640,24 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
           
           {/* Section 1: Packaging Identification */}
           <div className="space-y-2">
-            <h3 className="font-display font-bold text-sm text-[#8B5CF6] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
+            <h3 className="font-display font-bold text-sm text-[#6D28D9] dark:text-[#A78BFA] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
               {t.declaration.packagingId}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-1">
               <div>
-                <span className="dark:text-slate-400 text-slate-500 block">{t.declaration.productName} :</span>
+                <span className="dark:text-slate-400 text-slate-600 block">{t.declaration.productName} :</span>
                 <span className="font-bold dark:text-slate-200 text-slate-800 text-sm print:text-black">{item.name}</span>
               </div>
               <div>
-                <span className="dark:text-slate-400 text-slate-500 block">{t.declaration.sku} :</span>
+                <span className="dark:text-slate-400 text-slate-600 block">{t.declaration.sku} :</span>
                 <span className="font-mono font-bold dark:text-slate-200 text-slate-800 print:text-black">{item.sku}</span>
               </div>
               <div>
-                <span className="dark:text-slate-400 text-slate-500 block">{t.declaration.category} :</span>
+                <span className="dark:text-slate-400 text-slate-600 block">{t.declaration.category} :</span>
                 <span className="capitalize dark:text-slate-200 text-slate-800 print:text-black font-medium">{item.category}</span>
               </div>
               <div>
-                <span className="dark:text-slate-400 text-slate-500 block">Composants & Matériaux :</span>
+                <span className="dark:text-slate-400 text-slate-600 block">Composants & Matériaux :</span>
                 <span className="dark:text-slate-200 text-slate-800 print:text-black font-medium">
                   {item.components.map(c => `${c.name} (${c.materialCode})`).join(' · ')}
                 </span>
@@ -667,20 +667,20 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
 
           {/* Section 2: Manufacturer */}
           <div className="space-y-2">
-            <h3 className="font-display font-bold text-sm text-[#8B5CF6] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
+            <h3 className="font-display font-bold text-sm text-[#6D28D9] dark:text-[#A78BFA] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
               {t.declaration.manufacturerId}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-1">
               <div>
-                <span className="dark:text-slate-400 text-slate-500 block">{t.declaration.company} :</span>
+                <span className="dark:text-slate-400 text-slate-600 block">{t.declaration.company} :</span>
                 <span className="font-bold dark:text-slate-200 text-slate-800 text-sm print:text-black">{item.manufacturer.companyName}</span>
               </div>
               <div>
-                <span className="dark:text-slate-400 text-slate-500 block">{t.declaration.vat} :</span>
+                <span className="dark:text-slate-400 text-slate-600 block">{t.declaration.vat} :</span>
                 <span className="font-mono dark:text-slate-200 text-slate-800 print:text-black font-semibold">{item.manufacturer.vatNumber}</span>
               </div>
               <div className="md:col-span-2">
-                <span className="dark:text-slate-400 text-slate-500 block">{t.declaration.address} :</span>
+                <span className="dark:text-slate-400 text-slate-600 block">{t.declaration.address} :</span>
                 <span className="dark:text-slate-200 text-slate-800 print:text-black">{item.manufacturer.address}, {item.manufacturer.country}</span>
               </div>
             </div>
@@ -688,44 +688,44 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
 
           {/* Section 3: Object of Declaration & Conformity Statement */}
           <div className="space-y-3">
-            <h3 className="font-display font-bold text-sm text-[#8B5CF6] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
+            <h3 className="font-display font-bold text-sm text-[#6D28D9] dark:text-[#A78BFA] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
               {t.declaration.objectDecl}
             </h3>
             <p className="text-xs dark:text-slate-300 text-slate-700 leading-relaxed print:text-black">
               {t.declaration.objectDeclText}
             </p>
-            <div className="p-3 rounded-lg dark:bg-slate-900 bg-slate-100 border dark:border-slate-800 border-slate-200 font-mono text-xs text-[#F97316] font-bold">
+            <div className="p-3 rounded-lg dark:bg-slate-900 bg-slate-100 border dark:border-slate-800 border-slate-200 font-mono text-xs text-[#C2410C] dark:text-[#FB923C] font-bold">
               {t.declaration.regTitle}
             </div>
 
             {/* Compliance Articles Audit Matrix */}
             <div className="space-y-1.5 pt-1 text-xs">
               <div className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span className="dark:text-slate-300 text-slate-700 print:text-black">
                   <strong>Article 5 (Substances réglementées) :</strong> Somme cumulée = <strong>{item.heavyMetals?.total_mg_kg ?? 'n.d.'} mg/kg</strong> (limite 100 mg/kg). PFAS : {item.pfas?.declaredFree ? 'conforme' : 'non attesté'}.
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span className="dark:text-slate-300 text-slate-700 print:text-black">
                   <strong>Article 6 (Recyclabilité) :</strong> Écoconception classée <strong>Grade {report.recyclabilityGrade}</strong> (score {report.recyclabilityScore}%), satisfaisant le seuil obligatoire de Grade C applicable en 2030.
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span className="dark:text-slate-300 text-slate-700 print:text-black">
                   <strong>Article 7 (Matières plastiques recyclées) :</strong> Taux moyen de résine recyclée post-consommation conforme aux seuils minimaux imposés par l'Annexe III.
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span className="dark:text-slate-300 text-slate-700 print:text-black">
                   <strong>Article 9 & 21 (Minimisation du vide) :</strong> Ratio de vide mesuré à <strong>{item.dimensions.voidSpaceRatioPercent}%</strong>, conforme au plafond maximal de 50%.
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span className="dark:text-slate-300 text-slate-700 print:text-black">
                   <strong>Article 11 (Étiquetage harmonisé) :</strong> Codification matériau selon décision 97/129/CE (<strong>{item.labeling.materialCode}</strong>) et instructions de tri destinées au consommateur.
                 </span>
@@ -735,13 +735,13 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
 
           {/* Section 4: Harmonised Standards Applied */}
           <div className="space-y-2">
-            <h3 className="font-display font-bold text-sm text-[#8B5CF6] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
+            <h3 className="font-display font-bold text-sm text-[#6D28D9] dark:text-[#A78BFA] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
               {t.declaration.standardsTable}
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b dark:border-slate-800 border-slate-200 dark:text-slate-400 text-slate-500 font-mono">
+                  <tr className="border-b dark:border-slate-800 border-slate-200 dark:text-slate-400 text-slate-600 font-mono">
                     <th className="py-2">{t.declaration.standardsColStandard}</th>
                     <th className="py-2">{t.declaration.standardsColScope}</th>
                     <th className="py-2 text-right">{t.declaration.standardsColStatus}</th>
@@ -752,7 +752,7 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
                     <tr key={std.code}>
                       <td className="py-2 font-bold dark:text-indigo-300 text-indigo-700 print:text-black">{std.code}</td>
                       <td className="py-2 dark:text-slate-300 text-slate-700 print:text-slate-800">{language === 'fr' ? std.titleFr : std.titleEn}</td>
-                      <td className="py-2 text-right text-emerald-500 print:text-emerald-700 font-semibold">✓ Conforme</td>
+                      <td className="py-2 text-right text-emerald-700 dark:text-emerald-400 print:text-emerald-700 font-semibold">✓ Conforme</td>
                     </tr>
                   ))}
                 </tbody>
@@ -762,10 +762,10 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
 
           {/* Section 5: Technical Dossier References */}
           <div className="space-y-2">
-            <h3 className="font-display font-bold text-sm text-[#8B5CF6] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
+            <h3 className="font-display font-bold text-sm text-[#6D28D9] dark:text-[#A78BFA] uppercase tracking-wider border-b dark:border-slate-800 border-slate-200 pb-1">
               {t.declaration.dossierRef}
             </h3>
-            <p className="text-xs dark:text-slate-400 text-slate-500">
+            <p className="text-xs dark:text-slate-400 text-slate-600">
               {language === 'fr' 
                 ? 'Conformément à l\'Article 13, les pièces justificatives suivantes sont archivées dans le coffre-fort technique de conformité pendant une durée minimale de 10 ans :'
                 : 'In accordance with Article 13, the following evidence documents are held in the technical documentation vault for at least 10 years:'}
@@ -785,27 +785,27 @@ export const DeclarationBuilder: React.FC<DeclarationBuilderProps> = ({
               <span className="font-semibold dark:text-slate-300 text-slate-700 block print:text-black">{t.declaration.signatoryBlock} :</span>
               <p className="dark:text-slate-200 text-slate-900 text-sm font-bold print:text-black">{item.manufacturer.signatoryName}</p>
               <p className="dark:text-slate-400 text-slate-600 print:text-slate-700">{item.manufacturer.signatoryRole}</p>
-              <p className="dark:text-slate-400 text-slate-500 font-mono text-[11px] print:text-slate-700">
+              <p className="dark:text-slate-400 text-slate-600 font-mono text-[11px] print:text-slate-700">
                 {t.declaration.signedAt} Paris, {t.declaration.signedOn} {currentDate}
               </p>
             </div>
 
             {/* Economic Operator Digital Stamp */}
             <div className="p-3.5 rounded-lg border-2 dark:border-amber-500/50 border-amber-600/70 dark:bg-amber-950/20 bg-amber-50/70 text-center space-y-1.5 print:border-black print:bg-white shrink-0 max-w-[280px]">
-              <div className="text-[10px] font-mono text-amber-600 dark:text-amber-400 uppercase tracking-wider font-black print:text-black flex items-center justify-center gap-1">
-                <Zap className="h-3.5 w-3.5 text-amber-500" />
+              <div className="text-[10px] font-mono text-amber-800 dark:text-amber-400 uppercase tracking-wider font-black print:text-black flex items-center justify-center gap-1">
+                <Zap className="h-3.5 w-3.5 text-amber-800 dark:text-amber-400" />
                 <span>{language === 'fr' ? 'GÉNÉRÉ PAR POWER PPWR' : 'GENERATED VIA POWER PPWR'}</span>
               </div>
               <div className="text-[9px] dark:text-slate-200 text-slate-800 font-bold uppercase print:text-black leading-tight">
                 {language === 'fr' ? 'Sous la responsabilité exclusive du client déclarant' : 'Under sole responsibility of declaring client'}
               </div>
-              <div className="text-[9px] dark:text-slate-400 text-slate-500 font-mono">
+              <div className="text-[9px] dark:text-slate-400 text-slate-600 font-mono">
                 RÈGLEMENT (UE) 2025/40 · ANNEXE VII
               </div>
-              <div className="text-[8px] dark:text-slate-400 text-slate-500 font-mono pt-1 border-t dark:border-slate-800 border-amber-200 leading-tight">
+              <div className="text-[8px] dark:text-slate-400 text-slate-600 font-mono pt-1 border-t dark:border-slate-800 border-amber-200 leading-tight">
                 {t.declaration.assistanceToolNote}
               </div>
-              <div className="text-[8px] dark:text-slate-500 text-slate-400 font-mono">
+              <div className="text-[8px] dark:text-slate-400 text-slate-600 font-mono">
                 DOC REF: {declarationNumber}
               </div>
             </div>

@@ -152,6 +152,8 @@ export interface PackagingItem {
   labeling: LabelingData;
   documents: DossierDocument[];
   declarationNumber?: string;
+  /** Demo product (shipped preset or copy of one). Hidden when examples are turned off. */
+  isExample?: boolean;
 }
 
 export type RecyclabilityGrade = 'A' | 'B' | 'C' | 'D' | 'E';

@@ -102,7 +102,7 @@ ${item.manufacturer.companyName}`
       <div className="border-b dark:border-slate-800 border-slate-200 pb-5">
         <div className="flex items-center gap-2 mb-1.5">
           <div className="h-[2px] w-8 bg-[#F97316]" />
-          <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+          <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
             POWER PPWR COMPLIANCE FOLLOW-UP
           </span>
         </div>
@@ -110,7 +110,7 @@ ${item.manufacturer.companyName}`
           <h1 className="font-display text-2xl font-extrabold tracking-tight dark:text-white text-slate-900">
             {t.gaps.title}
           </h1>
-          <span className="text-xs bg-orange-500/10 border border-orange-500/30 text-[#F97316] px-2 py-0.5 rounded font-mono font-bold">
+          <span className="text-xs bg-orange-500/10 border border-orange-500/30 text-[#9A3412] dark:text-[#FB923C] px-2 py-0.5 rounded font-mono font-bold">
             Art. 13 & Chaîne Fournisseur
           </span>
         </div>
@@ -144,17 +144,17 @@ ${item.manufacturer.companyName}`
                     comp.status === 'compliant'
                       ? 'dark:bg-emerald-950/60 bg-emerald-100 border-emerald-300 text-emerald-700 dark:text-emerald-400'
                       : (comp.status === 'incomplete' 
-                          ? 'dark:bg-amber-950/60 bg-amber-100 border-amber-300 text-amber-700 dark:text-amber-400' 
+                          ? 'dark:bg-amber-950/60 bg-amber-100 border-amber-300 text-amber-800 dark:text-amber-400' 
                           : 'dark:bg-red-950/60 bg-red-100 border-red-300 text-red-700 dark:text-red-400')
                   }`}>
                     {t.statuses[comp.status] || comp.status}
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold dark:text-white text-slate-900">
+                <h2 className="text-sm font-bold dark:text-white text-slate-900">
                   {comp.name}
-                </h3>
-                <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                </h2>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 flex items-center gap-1">
                   <Building className="h-3 w-3" />
                   <span>{comp.supplierName}</span>
                 </p>
@@ -162,12 +162,12 @@ ${item.manufacturer.companyName}`
 
               <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-xs">
                 {hasGaps ? (
-                  <span className="text-[#F97316] font-semibold flex items-center gap-1">
+                  <span className="text-[#C2410C] dark:text-[#FB923C] font-semibold flex items-center gap-1">
                     <AlertTriangle className="h-3.5 w-3.5" />
                     <span>{comp.missingDataPoints.length} {language === 'fr' ? 'pièces à réclamer' : 'missing items'}</span>
                   </span>
                 ) : (
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                  <span className="text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1">
                     <CheckCircle2 className="h-3.5 w-3.5" />
                     <span>{language === 'fr' ? 'Dossier complet' : 'Fully verified'}</span>
                   </span>
@@ -185,10 +185,10 @@ ${item.manufacturer.companyName}`
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b dark:border-slate-800 border-slate-200 pb-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono font-bold text-[#8B5CF6]">COMPOSANT SÉLECTIONNÉ :</span>
+                <span className="text-xs font-mono font-bold text-[#6D28D9] dark:text-[#A78BFA]">COMPOSANT SÉLECTIONNÉ :</span>
                 <span className="text-sm font-extrabold dark:text-white text-slate-900">{selectedComponent.name}</span>
               </div>
-              <p className="text-xs dark:text-slate-400 text-slate-500 mt-0.5">
+              <p className="text-xs dark:text-slate-400 text-slate-600 mt-0.5">
                 Fournisseur : <strong className="dark:text-slate-200 text-slate-800">{selectedComponent.supplierName}</strong> ({selectedComponent.supplierContactEmail || 'email non renseigné'})
               </p>
             </div>
@@ -199,7 +199,7 @@ ${item.manufacturer.companyName}`
                   onClick={handleCopy}
                   className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-800 bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 dark:text-slate-200 text-slate-700 transition-colors shadow-xs"
                 >
-                  {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5 text-[#F97316]" />}
+                  {copied ? <Check className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" /> : <Copy className="h-3.5 w-3.5 text-[#C2410C] dark:text-[#FB923C]" />}
                   <span>{copied ? t.gaps.copied : t.gaps.copyEmail}</span>
                 </button>
 
@@ -218,11 +218,11 @@ ${item.manufacturer.companyName}`
           {selectedComponent.missingDataPoints.length > 0 ? (
             <div className="space-y-3">
               <div className="p-3 rounded-lg dark:bg-amber-950/20 bg-amber-50 border dark:border-amber-700/40 border-amber-300 flex items-start gap-3">
-                <ShieldAlert className="h-5 w-5 text-[#F97316] shrink-0 mt-0.5" />
+                <ShieldAlert className="h-5 w-5 text-[#C2410C] dark:text-[#FB923C] shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold dark:text-amber-300 text-amber-900 uppercase tracking-wide">
+                  <h3 className="text-xs font-bold dark:text-amber-300 text-amber-900 uppercase tracking-wide">
                     {language === 'fr' ? 'Données Manquantes Identifiées pour ce Composant :' : 'Identified Missing Regulatory Points:'}
-                  </h4>
+                  </h3>
                   <ul className="mt-1 space-y-1 text-xs dark:text-slate-300 text-slate-700 list-disc pl-4">
                     {selectedComponent.missingDataPoints.map((pt, idx) => (
                       <li key={idx} className="font-medium">
@@ -237,10 +237,10 @@ ${item.manufacturer.companyName}`
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold dark:text-slate-300 text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <Mail className="h-4 w-4 text-[#8B5CF6]" />
+                    <Mail className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
                     <span>{t.gaps.emailDraftTitle}</span>
                   </span>
-                  <span className="text-[11px] font-mono text-slate-500">
+                  <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400">
                     {language === 'fr' ? 'Conforme exigences PPWR Art. 13' : 'Conforming to PPWR Art. 13 requirements'}
                   </span>
                 </div>
@@ -252,10 +252,10 @@ ${item.manufacturer.companyName}`
             </div>
           ) : (
             <div className="p-6 rounded-lg dark:bg-emerald-950/20 bg-emerald-50 border dark:border-emerald-700/40 border-emerald-300 text-center space-y-2">
-              <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto" />
-              <h3 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
+              <CheckCircle2 className="h-8 w-8 text-emerald-700 dark:text-emerald-400 mx-auto" />
+              <h2 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
                 {t.gaps.noGaps}
-              </h3>
+              </h2>
               <p className="text-xs text-slate-600 dark:text-slate-400 max-w-lg mx-auto">
                 {language === 'fr' 
                   ? 'Tous les rapports d\'essais, métaux lourds et certificats de ce composant sont archivés dans le coffre-fort et prêts pour la Déclaration de Conformité.'

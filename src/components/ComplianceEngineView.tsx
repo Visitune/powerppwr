@@ -83,7 +83,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <div className="h-[2px] w-8 bg-[#F97316]" />
-            <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
               PPWR AUDIT ENGINE
             </span>
           </div>
@@ -94,7 +94,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
             <span className={`text-xs px-2.5 py-0.5 rounded font-bold border ${
               report.overallStatus === 'compliant'
                 ? 'dark:bg-emerald-950/60 bg-emerald-100 dark:border-emerald-700/60 border-emerald-300 text-emerald-700 dark:text-emerald-400'
-                : (report.overallStatus === 'incomplete' ? 'dark:bg-amber-950/60 bg-amber-100 dark:border-amber-700/60 border-amber-300 text-amber-700 dark:text-amber-400' : 'dark:bg-red-950/60 bg-red-100 dark:border-red-700/60 border-red-300 text-red-700 dark:text-red-400')
+                : (report.overallStatus === 'incomplete' ? 'dark:bg-amber-950/60 bg-amber-100 dark:border-amber-700/60 border-amber-300 text-amber-800 dark:text-amber-400' : 'dark:bg-red-950/60 bg-red-100 dark:border-red-700/60 border-red-300 text-red-700 dark:text-red-400')
             }`}>
               {t.compliance[report.overallStatus] || report.overallStatus}
             </span>
@@ -106,7 +106,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
 
         <button
           onClick={onProceedToDeclaration}
-          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-orange-500 to-indigo-600 hover:from-orange-600 hover:to-indigo-700 text-white shadow-md shadow-orange-500/20 transition-all shrink-0 self-start md:self-auto"
+          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-orange-700 to-indigo-700 hover:from-orange-800 hover:to-indigo-800 text-white shadow-md shadow-orange-500/20 transition-all shrink-0 self-start md:self-auto"
         >
           <span>{language === 'fr' ? 'Générer la Déclaration Officielle' : 'Generate Official Declaration'}</span>
           <ArrowRight className="h-4 w-4" />
@@ -120,16 +120,16 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
         <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-4 shadow-xs flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold dark:text-slate-400 text-slate-500 uppercase tracking-wide">
+              <span className="text-xs font-bold dark:text-slate-400 text-slate-600 uppercase tracking-wide">
                 {t.compliance.recyclabilityGrade}
               </span>
-              <Recycle className="h-4 w-4 text-emerald-500" />
+              <Recycle className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className={`font-display text-3xl font-extrabold ${['A', 'B', 'C'].includes(report.recyclabilityGrade) ? 'text-emerald-500' : 'text-red-500'}`}>
+              <span className={`font-display text-3xl font-extrabold ${['A', 'B', 'C'].includes(report.recyclabilityGrade) ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
                 Grade {report.recyclabilityGrade}
               </span>
-              <span className="font-mono text-xs dark:text-slate-400 text-slate-500">
+              <span className="font-mono text-xs dark:text-slate-400 text-slate-600">
                 ({report.recyclabilityScore}%)
               </span>
             </div>
@@ -138,7 +138,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
             </p>
           </div>
           {['A', 'B', 'C'].includes(report.recyclabilityGrade) ? (
-            <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-semibold">
+            <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono text-emerald-700 dark:text-emerald-400 flex items-center gap-1 font-semibold">
               <CheckCircle2 className="h-3 w-3" />
               <span>{language === 'fr' ? 'Seuil 2030 (Min. C) Atteint' : '2030 Threshold (Min. C) Met'}</span>
             </div>
@@ -154,18 +154,18 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
         <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-4 shadow-xs flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold dark:text-slate-400 text-slate-500 uppercase tracking-wide">
+              <span className="text-xs font-bold dark:text-slate-400 text-slate-600 uppercase tracking-wide">
                 {t.compliance.voidRatio}
               </span>
-              <Box className="h-4 w-4 text-[#F97316]" />
+              <Box className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C]" />
             </div>
             <div className="mt-3 flex items-baseline gap-2">
               <span className={`font-display text-3xl font-extrabold ${
-                voidArt?.status === 'critical' ? 'text-red-500' : (voidArt?.status === 'missing' ? 'text-slate-400' : 'text-[#F97316]')
+                voidArt?.status === 'critical' ? 'text-red-600 dark:text-red-400' : (voidArt?.status === 'missing' ? 'text-slate-600 dark:text-slate-400' : 'text-[#C2410C] dark:text-[#FB923C]')
               }`}>
                 {voidArt?.status === 'missing' ? '—' : `${item.dimensions.voidSpaceRatioPercent}%`}
               </span>
-              <span className="font-mono text-xs dark:text-slate-400 text-slate-500">
+              <span className="font-mono text-xs dark:text-slate-400 text-slate-600">
                 / 50% max
               </span>
             </div>
@@ -175,12 +175,12 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
           </div>
           <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono flex items-center gap-1 font-semibold">
             {voidArt?.status === 'missing' ? (
-              <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1">
+              <span className="text-slate-600 dark:text-slate-400 flex items-center gap-1">
                 <AlertTriangle className="h-3 w-3" />
                 {language === 'fr' ? 'Dimensions ou volume à renseigner' : 'Dimensions or volume required'}
               </span>
             ) : voidArt?.status === 'compliant' ? (
-              <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <span className="text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 className="h-3 w-3" />
                 {language === 'fr' ? 'Conforme Art. 21 (≤ 50%)' : 'Complies with Art. 21 (≤ 50%)'}
               </span>
@@ -197,16 +197,16 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
         <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-4 shadow-xs flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold dark:text-slate-400 text-slate-500 uppercase tracking-wide">
+              <span className="text-xs font-bold dark:text-slate-400 text-slate-600 uppercase tracking-wide">
                 {t.compliance.recycledContent}
               </span>
-              <Percent className="h-4 w-4 text-[#8B5CF6]" />
+              <Percent className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="font-display text-3xl font-extrabold text-[#8B5CF6]">
+              <span className="font-display text-3xl font-extrabold text-[#6D28D9] dark:text-[#A78BFA]">
                 {item.components.find(c => c.materialType === 'plastic')?.recycledPlasticPercent || 0}%
               </span>
-              <span className="font-mono text-xs dark:text-slate-400 text-slate-500">
+              <span className="font-mono text-xs dark:text-slate-400 text-slate-600">
                 PCR
               </span>
             </div>
@@ -215,7 +215,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
             </p>
           </div>
           <div className={`mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono flex items-center gap-1 font-semibold ${
-            pcrArt?.status === 'compliant' ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
+            pcrArt?.status === 'compliant' ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
           }`}>
             {pcrArt?.status === 'compliant' ? <CheckCircle2 className="h-3 w-3" /> : <AlertTriangle className="h-3 w-3" />}
             <span>
@@ -232,18 +232,18 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
         <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-4 shadow-xs flex flex-col justify-between transition-colors">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold dark:text-slate-400 text-slate-500 uppercase tracking-wide">
+              <span className="text-xs font-bold dark:text-slate-400 text-slate-600 uppercase tracking-wide">
                 {t.compliance.heavyMetalsTitle}
               </span>
-              <ShieldAlert className="h-4 w-4 text-emerald-500" />
+              <ShieldAlert className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
             </div>
             <div className="mt-3 flex items-baseline gap-2">
               <span className={`font-display text-3xl font-extrabold ${
-                art5?.status === 'compliant' ? 'text-emerald-500' : (art5?.status === 'critical' ? 'text-red-500' : 'text-slate-400')
+                art5?.status === 'compliant' ? 'text-emerald-700 dark:text-emerald-400' : (art5?.status === 'critical' ? 'text-red-600 dark:text-red-400' : 'text-slate-600 dark:text-slate-400')
               }`}>
                 {item.heavyMetals?.total_mg_kg ?? '—'}
               </span>
-              <span className="font-mono text-xs dark:text-slate-400 text-slate-500">
+              <span className="font-mono text-xs dark:text-slate-400 text-slate-600">
                 mg/kg & {!item.pfas ? 'PFAS ?' : (art5?.status === 'compliant' ? 'PFAS OK' : 'PFAS ?')}
               </span>
             </div>
@@ -252,7 +252,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
             </p>
           </div>
           <div className={`mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px] font-mono flex items-center gap-1 font-semibold ${
-            art5?.status === 'compliant' ? 'text-emerald-600 dark:text-emerald-400' : (art5?.status === 'critical' ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400')
+            art5?.status === 'compliant' ? 'text-emerald-700 dark:text-emerald-400' : (art5?.status === 'critical' ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400')
           }`}>
             {art5?.status === 'compliant' ? <CheckCircle2 className="h-3 w-3" /> : (art5?.status === 'critical' ? <XCircle className="h-3 w-3" /> : <AlertTriangle className="h-3 w-3" />)}
             <span>
@@ -271,24 +271,25 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
       <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-5 shadow-xs space-y-4 transition-colors">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Calculator className="h-5 w-5 text-[#F97316]" />
+            <Calculator className="h-5 w-5 text-[#C2410C] dark:text-[#FB923C]" />
             <h2 className="text-sm font-bold dark:text-white text-slate-900">
               {language === 'fr' 
                 ? 'Simulateur Dynamique de Taux de Vide & Réduction d\'Emballage (Art. 9 & 21)' 
                 : 'Dynamic Void Space Ratio & Packaging Minimization Simulator (Art. 9 & 21)'}
             </h2>
           </div>
-          <span className="text-[11px] font-mono text-[#F97316] bg-[#F97316]/10 border border-[#F97316]/30 px-2 py-0.5 rounded font-bold">
+          <span className="text-[11px] font-mono text-[#9A3412] dark:text-[#FB923C] bg-[#F97316]/10 border border-[#F97316]/30 px-2 py-0.5 rounded font-bold">
             Plafond Légal : 50% max
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label className="text-xs dark:text-slate-400 text-slate-600 block mb-1 font-medium">
+            <label htmlFor="dim-length" className="text-xs dark:text-slate-400 text-slate-600 block mb-1 font-medium">
               {language === 'fr' ? 'Longueur Extérieure (mm)' : 'Outer Length (mm)'}
             </label>
             <input
+              id="dim-length"
               type="number"
               value={item.dimensions.lengthMm}
               onChange={(e) => handleDimensionChange('lengthMm', parseFloat(e.target.value) || 0)}
@@ -297,10 +298,11 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
           </div>
 
           <div>
-            <label className="text-xs dark:text-slate-400 text-slate-600 block mb-1 font-medium">
+            <label htmlFor="dim-width" className="text-xs dark:text-slate-400 text-slate-600 block mb-1 font-medium">
               {language === 'fr' ? 'Largeur Extérieure (mm)' : 'Outer Width (mm)'}
             </label>
             <input
+              id="dim-width"
               type="number"
               value={item.dimensions.widthMm}
               onChange={(e) => handleDimensionChange('widthMm', parseFloat(e.target.value) || 0)}
@@ -309,10 +311,11 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
           </div>
 
           <div>
-            <label className="text-xs dark:text-slate-400 text-slate-600 block mb-1 font-medium">
+            <label htmlFor="dim-height" className="text-xs dark:text-slate-400 text-slate-600 block mb-1 font-medium">
               {language === 'fr' ? 'Hauteur Extérieure (mm)' : 'Outer Height (mm)'}
             </label>
             <input
+              id="dim-height"
               type="number"
               value={item.dimensions.heightMm}
               onChange={(e) => handleDimensionChange('heightMm', parseFloat(e.target.value) || 0)}
@@ -321,10 +324,11 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
           </div>
 
           <div>
-            <label className="text-xs dark:text-slate-400 text-slate-600 block mb-1 font-medium">
+            <label htmlFor="dim-volume" className="text-xs dark:text-slate-400 text-slate-600 block mb-1 font-medium">
               {language === 'fr' ? 'Volume Net Produits (cm³)' : 'Net Product Volume (cm³)'}
             </label>
             <input
+              id="dim-volume"
               type="number"
               value={item.dimensions.productVolumeCm3}
               onChange={(e) => handleDimensionChange('productVolumeCm3', parseFloat(e.target.value) || 0)}
@@ -340,7 +344,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
               {language === 'fr' ? 'Taux d\'espace vide calculé :' : 'Calculated Void Ratio:'}{' '}
               <strong className="dark:text-white text-slate-900">{item.dimensions.voidSpaceRatioPercent}%</strong>
             </span>
-            <span className={voidArt?.status === 'missing' ? 'text-slate-500 font-bold' : (item.dimensions.voidSpaceRatioPercent <= 50 ? 'text-emerald-500 font-bold' : 'text-red-500 font-bold')}>
+            <span className={voidArt?.status === 'missing' ? 'text-slate-500 font-bold' : (item.dimensions.voidSpaceRatioPercent <= 50 ? 'text-emerald-700 dark:text-emerald-400 font-bold' : 'text-red-600 dark:text-red-400 font-bold')}>
               {voidArt?.status === 'missing'
                 ? (language === 'fr' ? 'À RENSEIGNER' : 'TO BE PROVIDED')
                 : item.dimensions.voidSpaceRatioPercent <= 50
@@ -364,7 +368,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
       {/* Sourced Article-by-Article Breakdown */}
       <div className="space-y-4">
         <h2 className="text-base font-bold dark:text-white text-slate-900 flex items-center gap-2">
-          <FileCheck className="h-4 w-4 text-[#8B5CF6]" />
+          <FileCheck className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
           <span>{t.compliance.articlesBreakdown}</span>
         </h2>
 
@@ -382,10 +386,10 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
                   className="w-full p-4 flex items-center justify-between text-left dark:hover:bg-slate-900/60 hover:bg-slate-50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    {art.status === 'compliant' && <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />}
-                    {art.status === 'incomplete' && <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0" />}
-                    {art.status === 'critical' && <XCircle className="h-5 w-5 text-red-500 shrink-0" />}
-                    {art.status === 'missing' && <AlertTriangle className="h-5 w-5 text-slate-400 shrink-0" />}
+                    {art.status === 'compliant' && <CheckCircle2 className="h-5 w-5 text-emerald-700 dark:text-emerald-400 shrink-0" />}
+                    {art.status === 'incomplete' && <AlertTriangle className="h-5 w-5 text-amber-800 dark:text-amber-400 shrink-0" />}
+                    {art.status === 'critical' && <XCircle className="h-5 w-5 text-red-600 dark:text-red-400 shrink-0" />}
+                    {art.status === 'missing' && <AlertTriangle className="h-5 w-5 text-slate-600 dark:text-slate-400 shrink-0" />}
 
                     <div>
                       <div className="flex items-center gap-2">
@@ -396,17 +400,17 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
                           — {language === 'fr' ? art.titleFr : art.titleEn}
                         </span>
                       </div>
-                      <p className="text-xs dark:text-slate-400 text-slate-500 mt-0.5">
+                      <p className="text-xs dark:text-slate-400 text-slate-600 mt-0.5">
                         {language === 'fr' ? art.summaryFr : art.summaryEn}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-[11px] font-mono text-[#8B5CF6] dark:bg-indigo-950/40 bg-indigo-50 border dark:border-indigo-800/40 border-indigo-200 px-2 py-0.5 rounded hidden sm:inline-block font-semibold">
+                    <span className="text-[11px] font-mono text-[#6D28D9] dark:text-[#A78BFA] dark:bg-indigo-950/40 bg-indigo-50 border dark:border-indigo-800/40 border-indigo-200 px-2 py-0.5 rounded hidden sm:inline-block font-semibold">
                       {art.evidenceCount} {t.compliance.evidenceAttached}
                     </span>
-                    {isExpanded ? <ChevronUp className="h-4 w-4 text-slate-400" /> : <ChevronDown className="h-4 w-4 text-slate-400" />}
+                    {isExpanded ? <ChevronUp className="h-4 w-4 text-slate-600 dark:text-slate-400" /> : <ChevronDown className="h-4 w-4 text-slate-600 dark:text-slate-400" />}
                   </div>
                 </button>
 
@@ -425,7 +429,7 @@ export const ComplianceEngineView: React.FC<ComplianceEngineViewProps> = ({
                       </ul>
                     </div>
 
-                    <div className="pt-2 border-t dark:border-slate-800/60 border-slate-200 flex items-center justify-between text-[11px] dark:text-slate-500 text-slate-400 font-mono">
+                    <div className="pt-2 border-t dark:border-slate-800/60 border-slate-200 flex items-center justify-between text-[11px] dark:text-slate-400 text-slate-600 font-mono">
                       <span>Réf. Juridique : {art.legalReference}</span>
                     </div>
                   </div>

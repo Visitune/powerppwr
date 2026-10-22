@@ -144,7 +144,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       <div className="border-b dark:border-slate-800 border-slate-200 pb-6">
         <div className="flex items-center gap-2 mb-2">
           <div className="h-[2px] w-8 bg-[#F97316]" />
-          <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+          <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
             POWER PPWR ROI CALCULATOR & TIERS
           </span>
         </div>
@@ -160,14 +160,14 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       <div className="rounded-2xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-6 sm:p-8 shadow-sm transition-colors space-y-8">
         <div className="flex items-center justify-between border-b dark:border-slate-800 border-slate-100 pb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-[#F97316]/10 text-[#F97316]">
+            <div className="p-2.5 rounded-xl bg-[#F97316]/10 text-[#9A3412] dark:text-[#FB923C]">
               <Calculator className="h-6 w-6" />
             </div>
             <div>
               <h2 className="text-lg font-bold dark:text-white text-slate-900">
                 {p.calcTitle}
               </h2>
-              <span className="text-xs dark:text-slate-400 text-slate-500 font-mono">
+              <span className="text-xs dark:text-slate-400 text-slate-600 font-mono">
                 {language === 'fr' ? 'Modélisation basée sur les coûts observés en Europe (Règlement UE 2025/40)' : 'Modeled from average EU packaging compliance costs (EU 2025/40)'}
               </span>
             </div>
@@ -190,12 +190,13 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 <label className="dark:text-slate-300 text-slate-700">
                   {p.skuCount}
                 </label>
-                <span className="font-mono text-base font-bold text-[#F97316] dark:bg-slate-800 bg-orange-50 px-2.5 py-0.5 rounded border border-orange-200 dark:border-slate-700">
+                <span className="font-mono text-base font-bold text-[#C2410C] dark:text-[#FB923C] dark:bg-slate-800 bg-orange-50 px-2.5 py-0.5 rounded border border-orange-200 dark:border-slate-700">
                   {skuCount} SKUs
                 </span>
               </div>
               <input
                 type="range"
+                aria-label={p.skuCount}
                 min="5"
                 max="250"
                 step="5"
@@ -203,7 +204,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 onChange={(e) => setSkuCount(Number(e.target.value))}
                 className="w-full accent-[#F97316] cursor-pointer h-2 bg-slate-200 dark:bg-slate-700 rounded-lg"
               />
-              <div className="flex justify-between text-[10px] text-slate-400 font-mono">
+              <div className="flex justify-between text-[10px] text-slate-600 dark:text-slate-400 font-mono">
                 <span>5 SKUs (Atelier)</span>
                 <span>50 SKUs (PME)</span>
                 <span>250+ SKUs (Industrie)</span>
@@ -216,12 +217,13 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 <label className="dark:text-slate-300 text-slate-700">
                   {p.componentsCount}
                 </label>
-                <span className="font-mono text-sm font-bold text-[#8B5CF6] dark:bg-slate-800 bg-purple-50 px-2.5 py-0.5 rounded border border-purple-200 dark:border-slate-700">
+                <span className="font-mono text-sm font-bold text-[#6D28D9] dark:text-[#A78BFA] dark:bg-slate-800 bg-purple-50 px-2.5 py-0.5 rounded border border-purple-200 dark:border-slate-700">
                   {componentsPerSku} {language === 'fr' ? 'composants' : 'components'}
                 </span>
               </div>
               <input
                 type="range"
+                aria-label={language === 'fr' ? 'Composants par SKU' : 'Components per SKU'}
                 min="1"
                 max="8"
                 step="1"
@@ -229,7 +231,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 onChange={(e) => setComponentsPerSku(Number(e.target.value))}
                 className="w-full accent-[#8B5CF6] cursor-pointer h-2 bg-slate-200 dark:bg-slate-700 rounded-lg"
               />
-              <div className="flex justify-between text-[10px] text-slate-400 font-mono">
+              <div className="flex justify-between text-[10px] text-slate-600 dark:text-slate-400 font-mono">
                 <span>1 (Monoproduit)</span>
                 <span>3 (Bouteille + Bouchon + Étiquette)</span>
                 <span>8 (Emballage complexe)</span>
@@ -245,11 +247,12 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 <div className="flex items-center gap-1">
                   <input
                     type="number"
+                    aria-label={p.consultantCostPerDoC}
                     value={consultantRate}
                     onChange={(e) => setConsultantRate(Math.max(100, Number(e.target.value)))}
                     className="w-24 text-sm font-mono font-bold px-2 py-1 rounded border dark:border-slate-700 border-slate-300 dark:bg-slate-800 bg-white dark:text-white text-slate-900 focus:outline-none focus:border-[#F97316]"
                   />
-                  <span className="text-xs font-mono text-slate-500">€ / SKU</span>
+                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">€ / SKU</span>
                 </div>
               </div>
 
@@ -260,11 +263,12 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 <div className="flex items-center gap-1">
                   <input
                     type="number"
+                    aria-label={p.internalHoursPerDoC}
                     value={internalHours}
                     onChange={(e) => setInternalHours(Math.max(1, Number(e.target.value)))}
                     className="w-24 text-sm font-mono font-bold px-2 py-1 rounded border dark:border-slate-700 border-slate-300 dark:bg-slate-800 bg-white dark:text-white text-slate-900 focus:outline-none focus:border-[#F97316]"
                   />
-                  <span className="text-xs font-mono text-slate-500">{language === 'fr' ? 'heures / SKU' : 'hours / SKU'}</span>
+                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">{language === 'fr' ? 'heures / SKU' : 'hours / SKU'}</span>
                 </div>
               </div>
             </div>
@@ -274,11 +278,11 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           {/* Results Summary Card */}
           <div className="lg:col-span-5 rounded-2xl border dark:border-slate-800 border-slate-200 bg-gradient-to-br dark:from-[#0B1120] dark:to-[#1E293B] from-orange-50/50 to-indigo-50/40 p-6 shadow-md space-y-6">
             <div>
-              <span className="text-xs font-mono uppercase tracking-wider text-[#F97316] font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C] font-bold">
                 {p.resultsTitle}
               </span>
               <div className="mt-2 flex items-baseline gap-2">
-                <span className="font-display text-4xl sm:text-5xl font-extrabold text-[#F97316]">
+                <span className="font-display text-4xl sm:text-5xl font-extrabold text-[#C2410C] dark:text-[#FB923C]">
                   {netSavings.toLocaleString()} €
                 </span>
                 <span className="text-xs font-mono font-semibold dark:text-slate-400 text-slate-600">
@@ -295,27 +299,27 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
             <div className="space-y-3 pt-4 border-t dark:border-slate-700/60 border-slate-200 text-xs">
               <div className="flex items-center justify-between">
                 <span className="dark:text-slate-400 text-slate-600 flex items-center gap-1.5">
-                  <Clock className="h-4 w-4 text-[#8B5CF6]" />
+                  <Clock className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
                   <span>{p.totalHoursSaved} :</span>
                 </span>
-                <span className="font-mono font-bold text-[#8B5CF6] text-sm">
+                <span className="font-mono font-bold text-[#6D28D9] dark:text-[#A78BFA] text-sm">
                   {hoursSaved.toLocaleString()} {language === 'fr' ? 'heures' : 'hours'}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <span className="dark:text-slate-400 text-slate-600 flex items-center gap-1.5">
-                  <Euro className="h-4 w-4 text-emerald-500" />
+                  <Euro className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
                   <span>{language === 'fr' ? 'Coût méthode traditionnelle :' : 'Traditional manual cost:'}</span>
                 </span>
-                <span className="font-mono font-semibold text-slate-500 line-through">
+                <span className="font-mono font-semibold text-slate-600 dark:text-slate-400 line-through">
                   {grandTotalManualCost.toLocaleString()} €
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <span className="dark:text-slate-400 text-slate-600 flex items-center gap-1.5">
-                  <Sparkles className="h-4 w-4 text-[#F97316]" />
+                  <Sparkles className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C]" />
                   <span>{language === 'fr' ? 'Abonnement powerPPWR :' : 'powerPPWR subscription:'}</span>
                 </span>
                 <span className="font-mono font-bold dark:text-white text-slate-900">
@@ -353,7 +357,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           <div className="rounded-2xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-6 shadow-sm flex flex-col justify-between transition-all hover:border-slate-400 dark:hover:border-slate-600">
             <div className="space-y-4">
               <div>
-                <span className="text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase">
+                <span className="text-[10px] font-mono font-bold tracking-wider text-slate-600 dark:text-slate-400 uppercase">
                   STARTER
                 </span>
                 <h3 className="text-xl font-extrabold dark:text-white text-slate-900 mt-1">
@@ -368,32 +372,32 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 <span className="font-display text-3xl font-extrabold dark:text-white text-slate-900">
                   {p.starterPrice}
                 </span>
-                <span className="text-xs dark:text-slate-400 text-slate-500 ml-1">
+                <span className="text-xs dark:text-slate-400 text-slate-600 ml-1">
                   {p.starterPeriod}
                 </span>
               </div>
 
               <div className="space-y-2.5 pt-4 border-t dark:border-slate-800 border-slate-100 text-xs">
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Jusqu\'à 25 Déclarations UE de Conformité' : 'Up to 25 EU Declarations of Conformity'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Moteur d\'extraction déterministe (zéro-IA)' : 'Deterministic PDF extraction (zero-AI)'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Archivage opposable 10 ans (Art. 13)' : '10-year audit-ready dossier storage'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Export Déclaration PDF certifiée & JSON' : 'Export vector PDF & machine-readable JSON'}
                   </span>
@@ -417,7 +421,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
             <div className="space-y-4">
               <div>
-                <span className="text-[10px] font-mono font-bold tracking-wider text-[#F97316] uppercase">
+                <span className="text-[10px] font-mono font-bold tracking-wider text-[#C2410C] dark:text-[#FB923C] uppercase">
                   GROWTH INDUSTRIAL
                 </span>
                 <h3 className="text-xl font-extrabold dark:text-white text-slate-900 mt-1">
@@ -429,41 +433,41 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
               </div>
 
               <div className="pt-2">
-                <span className="font-display text-3xl font-extrabold text-[#F97316]">
+                <span className="font-display text-3xl font-extrabold text-[#C2410C] dark:text-[#FB923C]">
                   {p.growthPrice}
                 </span>
-                <span className="text-xs dark:text-slate-400 text-slate-500 ml-1">
+                <span className="text-xs dark:text-slate-400 text-slate-600 ml-1">
                   {p.growthPeriod}
                 </span>
               </div>
 
               <div className="space-y-2.5 pt-4 border-t dark:border-slate-800 border-slate-100 text-xs">
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#F97316] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C] shrink-0 mt-0.5" />
                   <span className="font-semibold dark:text-white text-slate-900">
                     {language === 'fr' ? 'Jusqu\'à 100 Déclarations UE de Conformité' : 'Up to 100 EU Declarations of Conformity'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#F97316] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C] shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Extraction Double Moteur : Zéro-IA + Gemini Flash' : 'Dual Extraction: Zero-AI + Gemini Flash'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#F97316] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C] shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Générateur de relances fournisseurs 1-clic' : '1-click automated supplier gap emails'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#F97316] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C] shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Matrice des 5 rôles UE (Art. 13 à 17)' : '5 EU Supply Chain Roles matrix (Art. 13-17)'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#F97316] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C] shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Revue Humaine intégrée (HITL) avec preuves citées' : 'Integrated Human-in-the-Loop review citations'}
                   </span>
@@ -473,7 +477,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
             <button
               onClick={onNavigateToVault}
-              className="mt-6 w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-[#F97316] hover:bg-[#ea580c] text-white shadow-md shadow-orange-500/25 transition-all cursor-pointer"
+              className="mt-6 w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-[#C2410C] hover:bg-[#9A3412] text-white shadow-md shadow-orange-500/25 transition-all cursor-pointer"
             >
               {language === 'fr' ? 'Démarrer avec Growth' : 'Start with Growth'}
             </button>
@@ -483,7 +487,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           <div className="rounded-2xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-6 shadow-sm flex flex-col justify-between transition-all hover:border-[#8B5CF6]">
             <div className="space-y-4">
               <div>
-                <span className="text-[10px] font-mono font-bold tracking-wider text-[#8B5CF6] uppercase">
+                <span className="text-[10px] font-mono font-bold tracking-wider text-[#6D28D9] dark:text-[#A78BFA] uppercase">
                   ENTERPRISE
                 </span>
                 <h3 className="text-xl font-extrabold dark:text-white text-slate-900 mt-1">
@@ -495,35 +499,35 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
               </div>
 
               <div className="pt-2">
-                <span className="font-display text-3xl font-extrabold text-[#8B5CF6]">
+                <span className="font-display text-3xl font-extrabold text-[#6D28D9] dark:text-[#A78BFA]">
                   {p.enterprisePrice}
                 </span>
-                <span className="text-xs dark:text-slate-400 text-slate-500 ml-1">
+                <span className="text-xs dark:text-slate-400 text-slate-600 ml-1">
                   {p.enterprisePeriod}
                 </span>
               </div>
 
               <div className="space-y-2.5 pt-4 border-t dark:border-slate-800 border-slate-100 text-xs">
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#8B5CF6] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA] shrink-0 mt-0.5" />
                   <span className="font-semibold dark:text-white text-slate-900">
                     {language === 'fr' ? 'Portefeuilles illimités 500+ SKUs' : 'Unlimited 500+ SKU packaging lines'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#8B5CF6] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA] shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Intégration directe VisiPLM & ERP industriel' : 'Direct VisiPLM & ERP enterprise API'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#8B5CF6] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA] shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Conseil d\'excellence sur site par VisiPilot' : 'On-site industrial advisory by VisiPilot'}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-[#8B5CF6] shrink-0 mt-0.5" />
+                  <Check className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA] shrink-0 mt-0.5" />
                   <span className="dark:text-slate-300 text-slate-700">
                     {language === 'fr' ? 'Accompagnement audit douanier dédié' : 'Dedicated market surveillance audit defense'}
                   </span>
@@ -533,7 +537,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
             <a
               href="mailto:contact@visipilot.com?subject=Demande%20powerPPWR%20Enterprise"
-              className="mt-6 w-full py-2.5 px-4 rounded-xl font-bold text-xs border border-[#8B5CF6]/40 dark:bg-purple-950/20 bg-purple-50 text-[#8B5CF6] hover:bg-purple-100 dark:hover:bg-purple-950/40 transition-colors text-center block"
+              className="mt-6 w-full py-2.5 px-4 rounded-xl font-bold text-xs border border-[#8B5CF6]/40 dark:bg-purple-950/20 bg-purple-50 text-[#6D28D9] dark:text-[#A78BFA] hover:bg-purple-100 dark:hover:bg-purple-950/40 transition-colors text-center block"
             >
               {language === 'fr' ? 'Contacter VisiPilot' : 'Contact VisiPilot'}
             </a>
@@ -547,7 +551,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <div className="h-[2px] w-6 bg-[#F97316]" />
-            <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
               BENCHMARK
             </span>
           </div>
@@ -564,11 +568,11 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-xs text-left">
             <thead>
-              <tr className="border-b dark:border-slate-800 border-slate-200 text-slate-400 font-mono">
+              <tr className="border-b dark:border-slate-800 border-slate-200 text-slate-600 dark:text-slate-400 font-mono">
                 <th className="py-3 px-4 font-semibold">{language === 'fr' ? 'Critère de Conformité' : 'Compliance Criterion'}</th>
-                <th className="py-3 px-4 font-semibold text-slate-500">{p.colSpreadsheet}</th>
-                <th className="py-3 px-4 font-semibold text-slate-500">{p.colConsultant}</th>
-                <th className="py-3 px-4 font-bold text-[#F97316] dark:bg-orange-950/20 bg-orange-50/80 rounded-t-lg">
+                <th className="py-3 px-4 font-semibold text-slate-600 dark:text-slate-400">{p.colSpreadsheet}</th>
+                <th className="py-3 px-4 font-semibold text-slate-600 dark:text-slate-400">{p.colConsultant}</th>
+                <th className="py-3 px-4 font-bold text-[#C2410C] dark:text-[#FB923C] dark:bg-orange-950/20 bg-orange-50/80 rounded-t-lg">
                   {p.colPowerPPWR}
                 </th>
               </tr>
@@ -576,47 +580,47 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
             <tbody className="divide-y dark:divide-slate-800 divide-slate-100">
               <tr>
                 <td className="py-3.5 px-4 font-semibold dark:text-white text-slate-900">{p.criteriaSpeed}</td>
-                <td className="py-3.5 px-4 text-slate-500">2 à 4 semaines par produit</td>
-                <td className="py-3.5 px-4 text-slate-500">3 à 6 semaines par lot</td>
-                <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 dark:bg-orange-950/20 bg-orange-50/80">
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">2 à 4 semaines par produit</td>
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">3 à 6 semaines par lot</td>
+                <td className="py-3.5 px-4 font-bold text-emerald-700 dark:text-emerald-400 dark:bg-orange-950/20 bg-orange-50/80">
                   ⚡ 5 minutes par SKU
                 </td>
               </tr>
               <tr>
                 <td className="py-3.5 px-4 font-semibold dark:text-white text-slate-900">{p.criteriaCost}</td>
-                <td className="py-3.5 px-4 text-slate-500">800 € en temps interne non tracé</td>
-                <td className="py-3.5 px-4 text-slate-500">1 500 € à 3 000 € / SKU</td>
-                <td className="py-3.5 px-4 font-bold text-[#F97316] dark:bg-orange-950/20 bg-orange-50/80">
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">800 € en temps interne non tracé</td>
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">1 500 € à 3 000 € / SKU</td>
+                <td className="py-3.5 px-4 font-bold text-[#C2410C] dark:text-[#FB923C] dark:bg-orange-950/20 bg-orange-50/80">
                   À partir de 12 € / SKU
                 </td>
               </tr>
               <tr>
                 <td className="py-3.5 px-4 font-semibold dark:text-white text-slate-900">{p.criteriaAudit}</td>
-                <td className="py-3.5 px-4 text-red-500 flex items-center gap-1">
+                <td className="py-3.5 px-4 text-red-600 dark:text-red-400 flex items-center gap-1">
                   <XCircle className="h-3.5 w-3.5 shrink-0" />
                   <span>Non conforme (liens cassés, pas de traçabilité)</span>
                 </td>
-                <td className="py-3.5 px-4 text-amber-500">Rapport ponctuel figé dans le temps</td>
-                <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 dark:bg-orange-950/20 bg-orange-50/80">
+                <td className="py-3.5 px-4 text-amber-800 dark:text-amber-400">Rapport ponctuel figé dans le temps</td>
+                <td className="py-3.5 px-4 font-bold text-emerald-700 dark:text-emerald-400 dark:bg-orange-950/20 bg-orange-50/80">
                   ✔ Coffre-fort numérique opposable 10 ans
                 </td>
               </tr>
               <tr>
                 <td className="py-3.5 px-4 font-semibold dark:text-white text-slate-900">{p.criteriaSuppliers}</td>
-                <td className="py-3.5 px-4 text-slate-500">Emails manuels perdus et sans suivi</td>
-                <td className="py-3.5 px-4 text-slate-500">Facturé en supplément par le cabinet</td>
-                <td className="py-3.5 px-4 font-bold text-[#8B5CF6] dark:bg-orange-950/20 bg-orange-50/80">
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">Emails manuels perdus et sans suivi</td>
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">Facturé en supplément par le cabinet</td>
+                <td className="py-3.5 px-4 font-bold text-[#6D28D9] dark:text-[#A78BFA] dark:bg-orange-950/20 bg-orange-50/80">
                   ✔ Relances automatiques en 1 clic
                 </td>
               </tr>
               <tr>
                 <td className="py-3.5 px-4 font-semibold dark:text-white text-slate-900">{p.criteriaEngine}</td>
-                <td className="py-3.5 px-4 text-red-500 flex items-center gap-1">
+                <td className="py-3.5 px-4 text-red-600 dark:text-red-400 flex items-center gap-1">
                   <XCircle className="h-3.5 w-3.5 shrink-0" />
                   <span>Risque élevé d'erreur humaine</span>
                 </td>
-                <td className="py-3.5 px-4 text-slate-500">Évaluation manuelle dépendante de l'auditeur</td>
-                <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 dark:bg-orange-950/20 bg-orange-50/80">
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">Évaluation manuelle dépendante de l'auditeur</td>
+                <td className="py-3.5 px-4 font-bold text-emerald-700 dark:text-emerald-400 dark:bg-orange-950/20 bg-orange-50/80">
                   ✔ 100% Déterministe & Zéro hallucination
                 </td>
               </tr>
@@ -630,7 +634,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <div className="h-[2px] w-6 bg-[#F97316]" />
-            <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
               FAQ PPWR
             </span>
           </div>
@@ -648,9 +652,9 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
               >
                 <span>{faq.q}</span>
                 {openFaq[idx] ? (
-                  <ChevronUp className="h-4 w-4 text-slate-400 shrink-0" />
+                  <ChevronUp className="h-4 w-4 text-slate-600 dark:text-slate-400 shrink-0" />
                 ) : (
-                  <ChevronDown className="h-4 w-4 text-slate-400 shrink-0" />
+                  <ChevronDown className="h-4 w-4 text-slate-600 dark:text-slate-400 shrink-0" />
                 )}
               </button>
               {openFaq[idx] && (

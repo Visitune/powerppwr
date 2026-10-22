@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { ComplianceStatus, Language, PackagingItem } from '../types/ppwr';
 import { evaluatePackagingCompliance } from '../utils/complianceEngine';
 import { translations } from '../utils/i18n';
+import { isExampleProduct } from '../utils/products';
 
 const STATUS_STYLES: Record<ComplianceStatus, { dot: string; badge: string }> = {
   compliant: { dot: 'bg-emerald-500', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/30' },
-  incomplete: { dot: 'bg-amber-500', badge: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/30' },
+  incomplete: { dot: 'bg-amber-500', badge: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/30' },
   critical: { dot: 'bg-red-500', badge: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/30' },
   missing: { dot: 'bg-slate-400', badge: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-500/10 dark:text-slate-300 dark:border-slate-500/30' },
 };
@@ -14,6 +15,7 @@ interface Props {
   products: PackagingItem[];
   selectedId: string;
   onSelect: (id: string) => void;
+  onEdit: (id: string) => void;
   onCreate: () => void;
   onDuplicate: (id: string) => void;
   onDelete: (id: string) => void;
@@ -21,10 +23,11 @@ interface Props {
   language: Language;
 }
 
-export const ProductsView: React.FC<Props> = ({ products, selectedId, onSelect, onCreate, onDuplicate, onDelete, onImport, language }) => {
+export const ProductsView: React.FC<Props> = ({ products, selectedId, onSelect, onEdit, onCreate, onDuplicate, onDelete, onImport, language }) => {
   const fr = language === 'fr';
   const fileRef = React.useRef<HTMLInputElement>(null);
   const [importError, setImportError] = useState('');
+  const [confirmId, setConfirmId] = useState<string | null>(null);
 
   const exportJson = (item: PackagingItem) => {
     const blob = new Blob([JSON.stringify(item, null, 2)], { type: 'application/json' });
@@ -43,7 +46,7 @@ export const ProductsView: React.FC<Props> = ({ products, selectedId, onSelect, 
     reader.onload = () => {
       try {
         const parsed = JSON.parse(String(reader.result));
-        if (!parsed?.id || !parsed?.name || !Array.isArray(parsed?.components)) throw new Error('invalid');
+        if (!parsed?.name || !Array.isArray(parsed?.components)) throw new Error('invalid');
         onImport(parsed);
         setImportError('');
       } catch {
@@ -69,7 +72,7 @@ export const ProductsView: React.FC<Props> = ({ products, selectedId, onSelect, 
           <input ref={fileRef} type="file" accept="application/json" className="hidden" onChange={handleImportFile} />
         </div>
       </div>
-      {importError && <div role="alert" className="text-red-500 text-sm">{importError}</div>}
+      {importError && <div role="alert" className="text-red-600 dark:text-red-400 text-sm">{importError}</div>}
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3 lg:gap-4">
         {products.map(p => {
           const rep = evaluatePackagingCompliance(p);
@@ -80,9 +83,10 @@ export const ProductsView: React.FC<Props> = ({ products, selectedId, onSelect, 
               <button type="button" onClick={() => onSelect(p.id)} aria-pressed={selected} className="text-left min-w-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded">
                 <div className="flex items-start justify-between gap-2">
                   <div className="font-semibold dark:text-white text-slate-900 break-words">{p.name}</div>
+                  {isExampleProduct(p) && <span className="shrink-0 text-[10px] font-bold uppercase text-[#C2410C] dark:text-[#FB923C]">{fr ? 'Exemple' : 'Example'}</span>}
                   {selected && <span className="shrink-0 text-[10px] font-bold uppercase text-indigo-600 dark:text-indigo-300">{fr ? 'En cours' : 'Active'}</span>}
                 </div>
-                <div className="text-xs font-mono text-slate-500 mt-0.5">{p.sku}</div>
+                <div className="text-xs font-mono text-slate-600 dark:text-slate-400 mt-0.5">{p.sku}</div>
               </button>
               <div className="flex flex-wrap items-center gap-2.5 text-xs">
                 <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 font-semibold rounded-full border ${st.badge}`}>
@@ -92,14 +96,22 @@ export const ProductsView: React.FC<Props> = ({ products, selectedId, onSelect, 
                 <span className="font-mono dark:text-slate-400 text-slate-600">{fr ? 'Recyclabilité' : 'Recyclability'} {rep.recyclabilityGrade} · {rep.recyclabilityScore}%</span>
               </div>
               <div className="flex flex-wrap gap-2 mt-auto pt-1">
-                <button type="button" onClick={() => exportJson(p)} className="text-xs px-2.5 py-1.5 border rounded-md dark:border-slate-700 border-slate-300 dark:text-slate-200 dark:hover:bg-slate-800 hover:bg-slate-50">{fr ? 'Exporter' : 'Export'}</button>
-                <button type="button" onClick={() => onDuplicate(p.id)} className="text-xs px-2.5 py-1.5 border rounded-md dark:border-slate-700 border-slate-300 dark:text-slate-200 dark:hover:bg-slate-800 hover:bg-slate-50">{fr ? 'Dupliquer' : 'Duplicate'}</button>
-                <button type="button" onClick={() => onDelete(p.id)} disabled={products.length <= 1} title={products.length <= 1 ? (fr ? 'Impossible de supprimer le dernier produit' : 'Cannot delete the last product') : ''} className="text-xs px-2.5 py-1.5 border rounded-md border-red-300 text-red-600 disabled:opacity-40 disabled:cursor-not-allowed">{fr ? 'Supprimer' : 'Delete'}</button>
+                <button type="button" onClick={() => onEdit(p.id)} className="text-xs px-2.5 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">{fr ? 'Modifier' : 'Edit'}<span className="sr-only"> {p.name}</span></button>
+                <button type="button" onClick={() => exportJson(p)} className="text-xs px-2.5 py-1.5 border rounded-md dark:border-slate-700 border-slate-300 dark:text-slate-200 dark:hover:bg-slate-800 hover:bg-slate-50">{fr ? 'Exporter' : 'Export'}<span className="sr-only"> {p.name}</span></button>
+                <button type="button" onClick={() => onDuplicate(p.id)} className="text-xs px-2.5 py-1.5 border rounded-md dark:border-slate-700 border-slate-300 dark:text-slate-200 dark:hover:bg-slate-800 hover:bg-slate-50">{fr ? 'Dupliquer' : 'Duplicate'}<span className="sr-only"> {p.name}</span></button>
+                {confirmId === p.id ? (
+                  <span role="alert" className="inline-flex items-center gap-1.5">
+                    <button type="button" onClick={() => { onDelete(p.id); setConfirmId(null); }} className="text-xs px-2.5 py-1.5 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700">{fr ? 'Confirmer la suppression' : 'Confirm deletion'}</button>
+                    <button type="button" onClick={() => setConfirmId(null)} className="text-xs px-2.5 py-1.5 border rounded-md dark:border-slate-700 border-slate-300 dark:text-slate-200">{fr ? 'Annuler' : 'Cancel'}</button>
+                  </span>
+                ) : (
+                  <button type="button" onClick={() => setConfirmId(p.id)} className="text-xs px-2.5 py-1.5 border rounded-md border-red-300 text-red-600 dark:border-red-500/50 dark:text-red-400">{fr ? 'Supprimer' : 'Delete'}<span className="sr-only"> {p.name}</span></button>
+                )}
               </div>
             </div>
           );
         })}
-        {products.length === 0 && <div className="text-slate-500 text-sm">{fr ? 'Aucun produit' : 'No products'}</div>}
+        {products.length === 0 && <div className="text-slate-600 dark:text-slate-400 text-sm">{fr ? 'Aucun produit' : 'No products'}</div>}
       </div>
     </div>
   );

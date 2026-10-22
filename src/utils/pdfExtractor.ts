@@ -163,7 +163,8 @@ export function extractDataDeterministic(
       total_mg_kg: totalHeavyMetals,
       isCompliant,
       belowLoq,
-      labReportNumber: (text.match(/(?:Report|Rapport|Certificate)\s*(?:No|N°|#)?[\s:]*([A-Z0-9\-_]{5,20})/i) || [])[1],
+      // The identifier must contain a digit, otherwise "Test Report Report No: X" would yield the word "Report"
+      labReportNumber: (text.match(/(?:Report|Rapport|Certificate|Certificat)\s*(?:N[o°]\.?|#|Number|Num[ée]ro)?\s*:?\s*(?=[A-Z0-9\-_/]*\d)([A-Z0-9][A-Z0-9\-_/]{4,24})/i) || [])[1],
       testedDate: (text.match(/(?:Date|Test\s*Date)[\s:]*([0-9]{2}[\/\-.][0-9]{2}[\/\-.][0-9]{4})/i) || [])[1],
       sourceSnippet: snippetHeavyMetals || undefined,
     };

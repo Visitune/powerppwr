@@ -90,7 +90,7 @@ export const RoleResponsibilityGuide: React.FC<RoleResponsibilityGuideProps> = (
       <div className="border-b dark:border-slate-800 border-slate-200 pb-5">
         <div className="flex items-center gap-2 mb-1.5">
           <div className="h-[2px] w-8 bg-[#F97316]" />
-          <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+          <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
             PPWR VALUE CHAIN MAPPING
           </span>
         </div>
@@ -98,7 +98,7 @@ export const RoleResponsibilityGuide: React.FC<RoleResponsibilityGuideProps> = (
           <h1 className="font-display text-2xl font-extrabold tracking-tight dark:text-white text-slate-900">
             {t.roles.title}
           </h1>
-          <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-500 dark:text-indigo-400 px-2 py-0.5 rounded font-mono font-bold">
+          <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-700 dark:text-indigo-400 px-2 py-0.5 rounded font-mono font-bold">
             Chapitre III · Art. 13-17
           </span>
         </div>
@@ -110,11 +110,11 @@ export const RoleResponsibilityGuide: React.FC<RoleResponsibilityGuideProps> = (
       {/* Role Selection Banner */}
       <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 text-[#8B5CF6]">
+          <div className="p-2.5 rounded-lg bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 text-[#6D28D9] dark:text-[#A78BFA]">
             <UserCheck className="h-6 w-6" />
           </div>
           <div>
-            <span className="text-xs font-bold dark:text-slate-400 text-slate-500 uppercase tracking-wide block">
+            <span className="text-xs font-bold dark:text-slate-400 text-slate-600 uppercase tracking-wide block">
               {t.roles.yourRole}
             </span>
             <span className="text-lg font-extrabold dark:text-white text-slate-900 capitalize">
@@ -123,7 +123,7 @@ export const RoleResponsibilityGuide: React.FC<RoleResponsibilityGuideProps> = (
           </div>
         </div>
 
-        <div className="text-xs font-mono text-[#F97316] bg-[#F97316]/10 border border-[#F97316]/30 px-3 py-1.5 rounded-lg font-bold">
+        <div className="text-xs font-mono text-[#9A3412] dark:text-[#FB923C] bg-[#F97316]/10 border border-[#F97316]/30 px-3 py-1.5 rounded-lg font-bold">
           {language === 'fr' ? 'Déclaration liée au rôle sélectionné' : 'Declaration configured for this role'}
         </div>
       </div>
@@ -153,26 +153,26 @@ export const RoleResponsibilityGuide: React.FC<RoleResponsibilityGuideProps> = (
                     <Icon className="h-5 w-5" />
                   </div>
                   {isSelected && (
-                    <span className="flex items-center gap-1 text-[11px] font-bold text-[#F97316]">
+                    <span className="flex items-center gap-1 text-[11px] font-bold text-[#C2410C] dark:text-[#FB923C]">
                       <CheckCircle2 className="h-4 w-4" />
                       <span>{language === 'fr' ? 'Rôle Actif' : 'Active Role'}</span>
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-base font-bold dark:text-white text-slate-900">
+                <h2 className="text-base font-bold dark:text-white text-slate-900">
                   {r.name}
-                </h3>
+                </h2>
                 <p className="text-xs dark:text-slate-400 text-slate-600 mt-2 leading-relaxed">
                   {r.desc}
                 </p>
 
                 <div className="mt-3 pt-2 border-t dark:border-slate-800 border-slate-100 text-[11px]">
-                  <span className="dark:text-slate-400 text-slate-500 font-medium block">Articles Clés :</span>
-                  <span className="font-mono text-[#8B5CF6] font-bold">{r.articles}</span>
+                  <span className="dark:text-slate-400 text-slate-600 font-medium block">Articles Clés :</span>
+                  <span className="font-mono text-[#6D28D9] dark:text-[#A78BFA] font-bold">{r.articles}</span>
                 </div>
 
-                <div className="mt-2 text-[11px] text-slate-500 italic">
+                <div className="mt-2 text-[11px] text-slate-600 dark:text-slate-400 italic">
                   {r.liabilityNotice}
                 </div>
               </div>

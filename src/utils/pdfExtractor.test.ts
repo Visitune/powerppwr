@@ -100,4 +100,22 @@ describe('pdfExtractor', () => {
     // no explicit free statement -> either undefined or false, never true
     expect(out.pfas?.declaredFree).not.toBe(true);
   });
+
+  it('reads the lab report number even when the word "Report" appears twice', () => {
+    const text = 'SGS Laboratory Test Report Report No: SGS-TEST-2026-001 Pb: 2 mg/kg Cd: 0.5 mg/kg Hg: 0.1 mg/kg Cr VI: 0.5 mg/kg';
+    const out = extractDataDeterministic(text, 'r.pdf', [{ page: 1, text }]);
+    expect(out.heavyMetals?.labReportNumber).toBe('SGS-TEST-2026-001');
+  });
+
+  it('never returns a plain word as report number', () => {
+    const text = 'Test Report on packaging. Pb: 2 mg/kg Cd: 0.5 mg/kg Hg: 0.1 mg/kg Cr VI: 0.5 mg/kg';
+    const out = extractDataDeterministic(text, 'r.pdf', [{ page: 1, text }]);
+    expect(out.heavyMetals?.labReportNumber).toBeUndefined();
+  });
+
+  it('reads French report numbers', () => {
+    const text = 'Rapport N° EUROFINS-2025-FR-7128. Plomb 1.5 mg/kg Cadmium 0.2 mg/kg Mercure 0.05 mg/kg Chrome hexavalent 0.5 mg/kg';
+    const out = extractDataDeterministic(text, 'r.pdf', [{ page: 1, text }]);
+    expect(out.heavyMetals?.labReportNumber).toBe('EUROFINS-2025-FR-7128');
+  });
 });

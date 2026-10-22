@@ -182,7 +182,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <div className="h-[2px] w-8 bg-[#F97316]" />
-            <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
               POWER PPWR TECHNICAL VAULT
             </span>
           </div>
@@ -190,7 +190,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
             <h1 className="font-display text-2xl font-extrabold tracking-tight dark:text-white text-slate-900">
               {t.vault.title}
             </h1>
-            <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-500 dark:text-indigo-400 px-2 py-0.5 rounded font-mono">
+            <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-700 dark:text-indigo-400 px-2 py-0.5 rounded font-mono">
               Art. 13 & Annexe VII
             </span>
           </div>
@@ -211,7 +211,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
       {/* Security & Confidentiality Banner */}
       <div className="rounded-xl border dark:border-emerald-900/40 border-emerald-200 dark:bg-emerald-950/20 bg-emerald-50/80 p-4 transition-colors">
         <div className="flex items-start gap-3">
-          <div className="p-2 rounded-lg dark:bg-emerald-900/30 bg-emerald-100 border dark:border-emerald-700/40 border-emerald-300 text-emerald-600 dark:text-emerald-400 shrink-0">
+          <div className="p-2 rounded-lg dark:bg-emerald-900/30 bg-emerald-100 border dark:border-emerald-700/40 border-emerald-300 text-emerald-700 dark:text-emerald-400 shrink-0">
             <Lock className="h-5 w-5" />
           </div>
           <div className="flex-1">
@@ -233,10 +233,10 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b dark:border-slate-800/80 border-slate-100">
           <div>
             <label className="text-xs font-bold dark:text-slate-200 text-slate-800 flex items-center gap-2">
-              <Layers className="h-4 w-4 text-[#F97316]" />
+              <Layers className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C]" />
               <span>{t.vault.engineSelect}</span>
             </label>
-            <p className="text-[11px] dark:text-slate-400 text-slate-500 mt-0.5">
+            <p className="text-[11px] dark:text-slate-400 text-slate-600 mt-0.5">
               {language === 'fr' 
                 ? 'Choisissez le mode de traitement selon la complexité de vos fiches techniques.'
                 : 'Select the parsing pipeline based on supplier document layout complexity.'}
@@ -273,6 +273,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
         <div className="relative border-2 border-dashed dark:border-slate-700/80 border-slate-300 hover:border-[#F97316] rounded-xl p-6 text-center transition-all dark:bg-slate-900/40 bg-slate-50 hover:bg-slate-100/60 group">
           <input
             type="file"
+            aria-label={language === 'fr' ? 'Choisir des documents fournisseurs (PDF ou texte)' : 'Choose supplier documents (PDF or text)'}
             accept=".pdf,.txt"
             multiple
             onChange={handleFileUpload}
@@ -280,14 +281,14 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
           />
           <div className="flex flex-col items-center justify-center space-y-2 pointer-events-none">
-            <div className="h-12 w-12 rounded-full dark:bg-slate-800 bg-white border dark:border-slate-700 border-slate-300 flex items-center justify-center text-[#F97316] group-hover:scale-105 transition-transform shadow-xs">
+            <div className="h-12 w-12 rounded-full dark:bg-slate-800 bg-white border dark:border-slate-700 border-slate-300 flex items-center justify-center text-[#C2410C] dark:text-[#FB923C] group-hover:scale-105 transition-transform shadow-xs">
               <Upload className="h-6 w-6" />
             </div>
             <div>
               <p className="text-sm font-bold dark:text-slate-200 text-slate-800">
                 {t.vault.dropzoneTitle}
               </p>
-              <p className="text-xs dark:text-slate-400 text-slate-500 mt-1 max-w-xl mx-auto">
+              <p className="text-xs dark:text-slate-400 text-slate-600 mt-1 max-w-xl mx-auto">
                 {t.vault.dropzoneSubtitle}
               </p>
             </div>
@@ -302,16 +303,16 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
         {/* Upload Status / Notice */}
         {uploadNotice && (
           <div className="flex items-center gap-2 p-3 rounded-lg dark:bg-indigo-950/40 bg-indigo-50 border dark:border-indigo-800/60 border-indigo-200 text-xs dark:text-indigo-200 text-indigo-800">
-            <CheckCircle2 className="h-4 w-4 text-indigo-500 shrink-0" />
+            <CheckCircle2 className="h-4 w-4 text-indigo-700 dark:text-indigo-300 shrink-0" />
             <span>{uploadNotice}</span>
           </div>
         )}
 
         {/* Human-in-the-Loop Protocol Alert */}
         <div className="flex items-start gap-2.5 p-3 rounded-lg dark:bg-slate-900/60 bg-amber-50/60 border dark:border-slate-800 border-amber-200 text-xs dark:text-slate-300 text-slate-700">
-          <AlertCircle className="h-4 w-4 text-[#F97316] shrink-0 mt-0.5" />
+          <AlertCircle className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C] shrink-0 mt-0.5" />
           <p className="leading-relaxed">
-            <strong className="text-[#F97316]">
+            <strong className="text-[#C2410C] dark:text-[#FB923C]">
               {language === 'fr' ? 'Protocole Légal de Revue Humaine :' : 'Mandatory Human Review Gate:'}
             </strong>{' '}
             {t.vault.hitlAlert}
@@ -323,7 +324,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-[#8B5CF6]" />
+            <FileText className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
             <h2 className="text-base font-bold dark:text-white text-slate-900">
               {t.vault.uploadedDocs}
             </h2>
@@ -334,7 +335,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
         </div>
 
         {item.documents.length === 0 ? (
-          <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-8 text-center dark:text-slate-400 text-slate-500 text-sm">
+          <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-8 text-center dark:text-slate-400 text-slate-600 text-sm">
             {t.vault.noDocs}
           </div>
         ) : (
@@ -345,22 +346,22 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                 {/* Document Header Bar */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 dark:bg-slate-900/80 bg-slate-50 border-b dark:border-slate-800 border-slate-200 gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded dark:bg-indigo-950/60 bg-indigo-50 border dark:border-indigo-800/40 border-indigo-200 text-indigo-500">
+                    <div className="p-2 rounded dark:bg-indigo-950/60 bg-indigo-50 border dark:border-indigo-800/40 border-indigo-200 text-indigo-700 dark:text-indigo-300">
                       <FileCheck2 className="h-5 w-5" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-sm dark:text-slate-200 text-slate-800">{doc.fileName}</span>
-                        <span className="text-[11px] font-mono dark:text-slate-400 text-slate-500">
+                        <span className="text-[11px] font-mono dark:text-slate-400 text-slate-600">
                           ({(doc.fileSize / 1024).toFixed(0)} KB)
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 text-xs dark:text-slate-400 text-slate-500 mt-0.5">
+                      <div className="flex items-center gap-2 text-xs dark:text-slate-400 text-slate-600 mt-0.5">
                         <span className="capitalize">{doc.documentType.replace(/_/g, ' ')}</span>
                         <span>·</span>
                         <span>{language === 'fr' ? 'Déposé le' : 'Uploaded'} {doc.uploadDate}</span>
                         <span>·</span>
-                        <span className="font-semibold text-[#8B5CF6]">
+                        <span className="font-semibold text-[#6D28D9] dark:text-[#A78BFA]">
                           Moteur: {doc.extractionEngine === 'deterministic' ? 'Déterministe (Zéro-IA)' : 'Gemini AI'}
                         </span>
                       </div>
@@ -391,13 +392,13 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                     <span className="text-xs font-bold dark:text-slate-300 text-slate-700 uppercase tracking-wider">
                       {language === 'fr' ? 'Données Réglementaires Extraites & Revue Humaine (HITL)' : 'Extracted Regulatory Data & Human Review (HITL)'}
                     </span>
-                    <span className="text-xs dark:text-slate-400 text-slate-500 font-mono">
+                    <span className="text-xs dark:text-slate-400 text-slate-600 font-mono">
                       {doc.evidences.filter(e => e.isVerifiedByHuman).length} / {doc.evidences.length} {language === 'fr' ? 'validés' : 'verified'}
                     </span>
                   </div>
 
                   {doc.evidences.length === 0 ? (
-                    <p className="text-xs dark:text-slate-500 text-slate-400 italic">
+                    <p className="text-xs dark:text-slate-400 text-slate-600 italic">
                       {language === 'fr' ? 'Aucun paramètre extractible trouvé dans ce document.' : 'No extractable parameters identified in this document.'}
                     </p>
                   ) : (
@@ -417,7 +418,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                                 <span className="text-xs font-bold dark:text-slate-200 text-slate-800">
                                   {ev.field.replace(/_/g, ' ').toUpperCase()}
                                 </span>
-                                <span className="text-[10px] dark:text-slate-400 text-slate-500 font-mono">
+                                <span className="text-[10px] dark:text-slate-400 text-slate-600 font-mono">
                                   ({t.vault.page} {ev.pageNumber})
                                 </span>
                               </div>
@@ -432,14 +433,14 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
 
                             {/* Human Verification Action Button */}
                             {ev.isVerifiedByHuman ? (
-                              <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 dark:bg-emerald-900/30 bg-emerald-100 border border-emerald-300 dark:border-emerald-700/40 px-2 py-0.5 rounded shrink-0">
+                              <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 dark:bg-emerald-900/30 bg-emerald-100 border border-emerald-300 dark:border-emerald-700/40 px-2 py-0.5 rounded shrink-0">
                                 <CheckCircle2 className="h-3 w-3" />
                                 <span>{t.vault.validated}</span>
                               </span>
                             ) : (
                               <button
                                 onClick={() => handleVerifyEvidence(doc.id, ev.id)}
-                                className="flex items-center gap-1 text-[11px] font-semibold text-amber-700 dark:text-amber-300 dark:bg-amber-950/80 bg-amber-100 hover:bg-amber-200 border border-amber-400 dark:border-amber-600/60 px-2.5 py-1 rounded transition-colors shrink-0 shadow-xs"
+                                className="flex items-center gap-1 text-[11px] font-semibold text-amber-800 dark:text-amber-300 dark:bg-amber-950/80 bg-amber-100 hover:bg-amber-200 border border-amber-400 dark:border-amber-600/60 px-2.5 py-1 rounded transition-colors shrink-0 shadow-xs"
                               >
                                 <CheckCircle2 className="h-3 w-3" />
                                 <span>{t.vault.validateField}</span>
@@ -454,7 +455,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                             </p>
                             <button
                               onClick={() => setActiveSnippetModal(ev)}
-                              className="text-[10px] font-semibold text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline mt-1 inline-block"
+                              className="text-[10px] font-semibold text-indigo-700 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline mt-1 inline-block"
                             >
                               {t.vault.viewSnippet}
                             </button>
@@ -467,7 +468,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                   {/* Summary of Extracted Standards */}
                   {doc.extractedData?.standardsCited && doc.extractedData.standardsCited.length > 0 && (
                     <div className="mt-3 pt-3 border-t dark:border-slate-800/80 border-slate-200 flex items-center gap-2 flex-wrap">
-                      <span className="text-[11px] dark:text-slate-400 text-slate-500 font-semibold">
+                      <span className="text-[11px] dark:text-slate-400 text-slate-600 font-semibold">
                         {language === 'fr' ? 'Normes Européennes Citées :' : 'Referenced European Standards:'}
                       </span>
                       {doc.extractedData.standardsCited.map((std, idx) => (
@@ -491,12 +492,12 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
           <div className="w-full max-w-lg rounded-xl border dark:border-slate-700 border-slate-300 dark:bg-slate-900 bg-white p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b dark:border-slate-800 border-slate-200 pb-3">
               <h3 className="text-base font-bold dark:text-white text-slate-900 flex items-center gap-2">
-                <Search className="h-4 w-4 text-[#F97316]" />
+                <Search className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C]" />
                 <span>{language === 'fr' ? 'Extrait Source Certifié' : 'Certified Source Excerpt'}</span>
               </h3>
               <button
                 onClick={() => setActiveSnippetModal(null)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-white text-sm font-semibold"
+                className="text-slate-600 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white text-sm font-semibold"
               >
                 ✕
               </button>
@@ -504,17 +505,17 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
 
             <div className="space-y-3">
               <div>
-                <span className="text-xs dark:text-slate-400 text-slate-500">{language === 'fr' ? 'Document Source :' : 'Source Document:'}</span>
+                <span className="text-xs dark:text-slate-400 text-slate-600">{language === 'fr' ? 'Document Source :' : 'Source Document:'}</span>
                 <p className="text-sm font-semibold dark:text-slate-200 text-slate-800">{activeSnippetModal.documentName}</p>
               </div>
 
               <div>
-                <span className="text-xs dark:text-slate-400 text-slate-500">{language === 'fr' ? 'Emplacement :' : 'Location:'}</span>
-                <p className="text-sm font-mono text-[#F97316] font-bold">Page {activeSnippetModal.pageNumber}</p>
+                <span className="text-xs dark:text-slate-400 text-slate-600">{language === 'fr' ? 'Emplacement :' : 'Location:'}</span>
+                <p className="text-sm font-mono text-[#C2410C] dark:text-[#FB923C] font-bold">Page {activeSnippetModal.pageNumber}</p>
               </div>
 
               <div>
-                <span className="text-xs dark:text-slate-400 text-slate-500">{language === 'fr' ? 'Valeur Extraite :' : 'Extracted Metric:'}</span>
+                <span className="text-xs dark:text-slate-400 text-slate-600">{language === 'fr' ? 'Valeur Extraite :' : 'Extracted Metric:'}</span>
                 <p className="text-sm font-bold dark:text-white text-slate-900 font-mono">
                   {typeof activeSnippetModal.value === 'boolean' 
                     ? (activeSnippetModal.value ? 'YES / CONFORME' : 'NO')
@@ -523,14 +524,14 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
               </div>
 
               <div>
-                <span className="text-xs dark:text-slate-400 text-slate-500">{language === 'fr' ? 'Citation textuelle intégrale :' : 'Verbatim Quotation:'}</span>
+                <span className="text-xs dark:text-slate-400 text-slate-600">{language === 'fr' ? 'Citation textuelle intégrale :' : 'Verbatim Quotation:'}</span>
                 <div className="mt-1 p-3 rounded-lg dark:bg-slate-950 bg-slate-100 border dark:border-slate-800 border-slate-300 text-xs font-mono dark:text-slate-300 text-slate-800 leading-relaxed max-h-48 overflow-y-auto">
                   "{activeSnippetModal.verbatimSnippet}"
                 </div>
               </div>
 
-              <div className="text-[11px] dark:text-slate-400 text-slate-500 flex items-center gap-1.5 pt-2">
-                <ShieldCheck className="h-4 w-4 text-emerald-500" />
+              <div className="text-[11px] dark:text-slate-400 text-slate-600 flex items-center gap-1.5 pt-2">
+                <ShieldCheck className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
                 <span>
                   {language === 'fr' 
                     ? 'Cette preuve est enregistrée et référencée dans la Déclaration UE selon l\'Article 13.'
@@ -557,19 +558,19 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
           <div className="w-full max-w-2xl rounded-xl border dark:border-slate-700 border-slate-300 dark:bg-slate-900 bg-white p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
             <div className="flex items-center justify-between border-b dark:border-slate-800 border-slate-200 pb-3 shrink-0">
               <h3 className="text-base font-bold dark:text-white text-slate-900 flex items-center gap-2">
-                <FileText className="h-4 w-4 text-[#8B5CF6]" />
+                <FileText className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
                 <span>{selectedDocForPreview.fileName}</span>
               </h3>
               <button
                 onClick={() => setSelectedDocForPreview(null)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-white text-sm font-semibold"
+                className="text-slate-600 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white text-sm font-semibold"
               >
                 ✕
               </button>
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-2">
-              <span className="text-xs dark:text-slate-400 text-slate-500 uppercase tracking-wider font-semibold">
+              <span className="text-xs dark:text-slate-400 text-slate-600 uppercase tracking-wider font-semibold">
                 {language === 'fr' ? 'Flux textuel extrait du PDF' : 'Extracted PDF text stream'}
               </span>
               <pre className="p-4 rounded-lg dark:bg-slate-950 bg-slate-100 border dark:border-slate-800 border-slate-300 text-xs font-mono dark:text-slate-300 text-slate-800 leading-relaxed whitespace-pre-wrap">

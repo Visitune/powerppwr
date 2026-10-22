@@ -1,10 +1,14 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { Language, PackagingItem } from './types/ppwr';
 import { samplePackagingPresets } from './data/samplePresets';
 import { evaluatePackagingCompliance } from './utils/complianceEngine';
 import { loadProducts, saveProduct, deleteProduct } from './utils/storage';
+import { cloneAsExample, createBlankProduct, isExampleProduct, newProductId, normalizeImportedProduct } from './utils/products';
+import { usePersistentState } from './utils/usePersistentState';
 import { HomeView } from './components/HomeView';
 import { ProductsView } from './components/ProductsView';
+import { ProductEditor } from './components/ProductEditor';
+import { NoProduct } from './components/NoProduct';
 import { AppShell, ActiveTab } from './components/Navbar';
 import { Quick5MinWorkflow } from './components/Quick5MinWorkflow';
 import { DocumentVault } from './components/DocumentVault';
@@ -18,139 +22,144 @@ import { SettingsView } from './components/SettingsView';
 import { UserGuideView } from './components/UserGuideView';
 import { Footer } from './components/Footer';
 
+const SEEDED_KEY = 'powerppwr_seeded';
+const SELECTED_KEY = 'powerppwr_selected';
+const PRODUCT_TABS: ActiveTab[] = ['editor', 'workflow', 'vault', 'compliance', 'gaps', 'declaration', 'roles'];
+
+const isLanguage = (v: unknown): v is Language => v === 'fr' || v === 'en';
+const isTheme = (v: unknown): v is 'dark' | 'light' => v === 'dark' || v === 'light';
+const isBool = (v: unknown): v is boolean => typeof v === 'boolean';
+
+function readFlag(key: string): boolean {
+  try { return localStorage.getItem(key) === '1'; } catch { return false; }
+}
+function writeFlag(key: string) {
+  try { localStorage.setItem(key, '1'); } catch { /* storage unavailable */ }
+}
+
 export default function App() {
-  const [language, setLanguage] = useState<Language>('fr');
-  const [theme, setTheme] = useState<'dark' | 'light'>('light');
-  const [showExamples, setShowExamples] = useState<boolean>(true);
+  const [language, setLanguage] = usePersistentState<Language>('powerppwr_lang', 'fr', isLanguage);
+  const [theme, setTheme] = usePersistentState<'dark' | 'light'>('powerppwr_theme', 'light', isTheme);
+  const [showExamples, setShowExamples] = usePersistentState<boolean>('powerppwr_show_examples', true, isBool);
   const [currentTab, setCurrentTab] = useState<ActiveTab>('home');
   const [products, setProducts] = useState<PackagingItem[]>([]);
   const [selectedProductId, setSelectedProductId] = useState<string>('');
   const [loaded, setLoaded] = useState(false);
   const [saveError, setSaveError] = useState('');
 
-  // Load products from IndexedDB on mount
+  const reportError = useCallback((e: unknown) => setSaveError(String((e as Error)?.message || e)), []);
+
+  // Load products from IndexedDB on mount; the demo examples are seeded only once
   useEffect(() => {
     (async () => {
-      let list = await loadProducts();
-      if (!list || list.length === 0) {
-        list = samplePackagingPresets.map(p => JSON.parse(JSON.stringify(p)));
-        for (const p of list) await saveProduct(p);
+      let list: PackagingItem[] = [];
+      try {
+        list = await loadProducts();
+        if (list.length === 0 && !readFlag(SEEDED_KEY)) {
+          list = samplePackagingPresets.map(p => cloneAsExample(p, true));
+          for (const p of list) await saveProduct(p);
+        }
+      } catch (e) {
+        reportError(e);
       }
+      writeFlag(SEEDED_KEY);
       setProducts(list);
-      // Restore the last active product (IndexedDB returns records sorted by key, not by use)
       let lastId = '';
-      try { lastId = localStorage.getItem('powerppwr_selected') || ''; } catch { /* storage unavailable */ }
-      setSelectedProductId(list.some(p => p.id === lastId) ? lastId : list[0].id);
+      try { lastId = localStorage.getItem(SELECTED_KEY) || ''; } catch { /* storage unavailable */ }
+      setSelectedProductId(list.some(p => p.id === lastId) ? lastId : (list[0]?.id ?? ''));
       setLoaded(true);
     })();
-  }, []);
+  }, [reportError]);
+
+  // Examples are hidden everywhere when the setting is off
+  const visibleProducts = useMemo(
+    () => (showExamples ? products : products.filter(p => !isExampleProduct(p))),
+    [products, showExamples]
+  );
+  const activeItem: PackagingItem | null = visibleProducts.find(p => p.id === selectedProductId) ?? visibleProducts[0] ?? null;
+  const activeId = activeItem?.id ?? '';
+  const exampleCount = useMemo(() => products.filter(isExampleProduct).length, [products]);
 
   useEffect(() => {
-    if (!loaded || !selectedProductId) return;
-    try { localStorage.setItem('powerppwr_selected', selectedProductId); } catch { /* storage unavailable */ }
-  }, [selectedProductId, loaded]);
-
-  const packagingItem = products.find(p => p.id === selectedProductId) || products[0] || samplePackagingPresets[0];
+    if (!loaded || !activeId) return;
+    try { localStorage.setItem(SELECTED_KEY, activeId); } catch { /* storage unavailable */ }
+  }, [activeId, loaded]);
 
   const setPackagingItem = (updater: any) => {
-    setProducts(prev => {
-      const idx = prev.findIndex(p => p.id === selectedProductId);
-      if (idx < 0) return prev;
-      const next = [...prev];
-      const current = next[idx];
-      const updated = typeof updater === 'function' ? updater(current) : updater;
-      next[idx] = updated;
-      return next;
-    });
+    if (!activeId) return;
+    setProducts(prev => prev.map(p => (p.id === activeId ? (typeof updater === 'function' ? updater(p) : updater) : p)));
   };
 
-  // Persist the selected product whenever it changes
+  // Persist the active product whenever it changes
   useEffect(() => {
-    if (!loaded) return;
-    const item = products.find(p => p.id === selectedProductId);
-    if (!item) return;
-    saveProduct(item).catch((e) => setSaveError(String(e?.message || e)));
-  }, [products, selectedProductId, loaded]);
+    if (!loaded || !activeItem) return;
+    saveProduct(activeItem).catch(reportError);
+  }, [activeItem, loaded, reportError]);
 
-  const handleSelectPreset = (id: string) => {
-    const found = samplePackagingPresets.find(p => p.id === id);
-    if (found) {
-      const clone = JSON.parse(JSON.stringify(found));
-      clone.id = 'prod-' + Date.now();
-      clone.name = found.name + ' (exemple)';
-      saveProduct(clone).then(() => {
-        setProducts(prev => [...prev, clone]);
-        setSelectedProductId(clone.id);
-      }).catch((e) => setSaveError(String(e?.message || e)));
-    }
+  const addAndSelect = (item: PackagingItem, tab?: ActiveTab) =>
+    saveProduct(item).then(() => {
+      setProducts(prev => [...prev, item]);
+      setSelectedProductId(item.id);
+      if (tab) setCurrentTab(tab);
+    }).catch(reportError);
+
+  const handleAddExample = (presetId: string) => {
+    const found = samplePackagingPresets.find(p => p.id === presetId);
+    if (found) addAndSelect(cloneAsExample(found));
   };
 
-  const handleCreateProduct = () => {
-    const id = 'prod-' + Date.now();
-    const newItem: PackagingItem = {
-      id,
-      name: 'Nouveau produit',
-      sku: 'SKU-' + Date.now(),
-      brand: '',
-      category: 'primary',
-      userRole: 'manufacturer',
-      manufacturer: { companyName: '', address: '', country: '', vatNumber: '', signatoryName: '', signatoryRole: '' },
-      components: [],
-      dimensions: { lengthMm: 0, widthMm: 0, heightMm: 0, packagingVolumeCm3: 0, productVolumeCm3: 0, voidSpaceRatioPercent: 0, isCompliant: false },
-      reusability: { isReusable: false, intendedRotations: 0, systemForReuse: 'none' },
-      labeling: { materialCode: '', sortingInstructions: '', hasHarmonizedPictogram: false },
-      documents: [],
-    };
-    saveProduct(newItem).then(() => {
-      setProducts(prev => [...prev, newItem]);
-      setSelectedProductId(id);
-    }).catch((e) => setSaveError(String(e?.message || e)));
-  };
+  const handleCreateProduct = () => { addAndSelect(createBlankProduct(), 'editor'); };
 
   const handleDuplicate = (id: string) => {
     const src = products.find(p => p.id === id);
     if (!src) return;
-    const clone = JSON.parse(JSON.stringify(src));
-    clone.id = 'prod-' + Date.now();
-    clone.name = src.name + ' (copie)';
+    const clone: PackagingItem = JSON.parse(JSON.stringify(src));
+    clone.id = newProductId();
+    clone.name = src.name.replace(/\s*\((exemple|example)\)\s*$/i, '') + ' (copie)';
+    clone.isExample = false;
     delete clone.declarationNumber;
-    saveProduct(clone).then(() => {
-      setProducts(prev => [...prev, clone]);
-      setSelectedProductId(clone.id);
-    }).catch((e) => setSaveError(String(e?.message || e)));
+    addAndSelect(clone);
   };
 
   const handleDelete = (id: string) => {
-    if (products.length <= 1) return;
-    deleteProduct(id).then(() => {
-      setProducts(prev => {
-        const next = prev.filter(p => p.id !== id);
-        if (selectedProductId === id && next.length) setSelectedProductId(next[0].id);
-        return next;
-      });
-    }).catch((e) => setSaveError(String(e?.message || e)));
+    deleteProduct(id)
+      .then(() => setProducts(prev => prev.filter(p => p.id !== id)))
+      .catch(reportError);
   };
 
-  const handleImport = (item: PackagingItem) => {
-    if (!item || !item.name || !Array.isArray(item.components) || !item.manufacturer) {
-      setSaveError('Import invalide : structure manquante');
+  const handleImport = (raw: unknown) => {
+    const item = normalizeImportedProduct(raw);
+    if (!item) {
+      setSaveError(language === 'fr' ? 'Import invalide : ce fichier n\'est pas un produit powerPPWR.' : 'Invalid import: this file is not a powerPPWR product.');
       return;
     }
-    const clone = JSON.parse(JSON.stringify(item));
-    clone.id = 'prod-' + Date.now();
-    clone.documents = Array.isArray(clone.documents) ? clone.documents : [];
-    clone.components = Array.isArray(clone.components) ? clone.components : [];
-    if (!clone.dimensions) clone.dimensions = { lengthMm: 0, widthMm: 0, heightMm: 0, packagingVolumeCm3: 0, productVolumeCm3: 0, voidSpaceRatioPercent: 0, isCompliant: false };
-    if (!clone.reusability) clone.reusability = { isReusable: false, intendedRotations: 0, systemForReuse: 'none' };
-    if (!clone.labeling) clone.labeling = { materialCode: '', sortingInstructions: '', hasHarmonizedPictogram: false };
-    delete clone.declarationNumber;
-    saveProduct(clone).then(() => {
-      setProducts(prev => [...prev, clone]);
-      setSelectedProductId(clone.id);
-    }).catch((e) => setSaveError(String(e?.message || e)));
+    setSaveError('');
+    addAndSelect(item);
   };
 
-  // Synchronize HTML element class and body background with selected theme
+  const handleRemoveExamples = async () => {
+    const examples = products.filter(isExampleProduct);
+    try {
+      for (const p of examples) await deleteProduct(p.id);
+      setProducts(prev => prev.filter(p => !isExampleProduct(p)));
+    } catch (e) {
+      reportError(e);
+    }
+  };
+
+  const handleRestoreExamples = async () => {
+    const missing = samplePackagingPresets.filter(p => !products.some(x => x.id === p.id));
+    const fresh = missing.map(p => cloneAsExample(p, true));
+    try {
+      for (const p of fresh) await saveProduct(p);
+      if (fresh.length) setProducts(prev => [...prev, ...fresh]);
+      setShowExamples(true);
+    } catch (e) {
+      reportError(e);
+    }
+  };
+
+  // Synchronize HTML element class, language and body background
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -163,18 +172,24 @@ export default function App() {
     }
   }, [theme]);
 
+  useEffect(() => { document.documentElement.lang = language; }, [language]);
+
   // Real-time compliance report recalculation
-  const complianceReport = useMemo(() => {
-    return evaluatePackagingCompliance(packagingItem);
-  }, [packagingItem]);
+  const complianceReport = useMemo(() => (activeItem ? evaluatePackagingCompliance(activeItem) : null), [activeItem]);
 
   const handleExportPdf = () => {
-    setCurrentTab('declaration');
+    setCurrentTab(activeItem ? 'declaration' : 'products');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const showNoProduct = loaded && !activeItem && PRODUCT_TABS.includes(currentTab);
+  const withProduct = loaded && activeItem && complianceReport;
+
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'dark bg-[#0B1120] text-slate-100' : 'bg-[#F8FAFC] text-slate-900'} font-sans transition-colors duration-200 selection:bg-indigo-500 selection:text-white`}>
+      <a href="#contenu" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-indigo-600 focus:text-white">
+        {language === 'fr' ? 'Aller au contenu' : 'Skip to content'}
+      </a>
       {/* Left sidebar (collapsible) + slim top bar; content uses the full remaining width */}
       <AppShell
         currentTab={currentTab}
@@ -183,127 +198,95 @@ export default function App() {
         setLanguage={setLanguage}
         theme={theme}
         setTheme={setTheme}
-        products={products.length ? products : [packagingItem]}
-        selectedProductId={packagingItem.id}
+        products={visibleProducts}
+        selectedProductId={activeId}
         onSelectProduct={setSelectedProductId}
         presets={showExamples ? samplePackagingPresets : []}
-        onAddExample={handleSelectPreset}
-        status={complianceReport.overallStatus}
+        onAddExample={handleAddExample}
+        status={complianceReport ? complianceReport.overallStatus : 'missing'}
         onExportPdf={handleExportPdf}
       >
+        <main id="contenu" tabIndex={-1} className="flex-1 w-full px-4 sm:px-6 lg:px-10 2xl:px-14 py-6 lg:py-8 focus:outline-none">
+          {!loaded && <div role="status" className="text-center py-10">{language === 'fr' ? 'Chargement…' : 'Loading…'}</div>}
+          {loaded && saveError && (
+            <div role="alert" className="mb-3 flex items-start justify-between gap-3 rounded-lg border border-red-300 dark:border-red-500/50 bg-red-50 dark:bg-red-500/10 px-3 py-2 text-sm text-red-700 dark:text-red-300">
+              <span>{saveError}</span>
+              <button type="button" onClick={() => setSaveError('')} className="font-semibold underline shrink-0">{language === 'fr' ? 'Fermer' : 'Dismiss'}</button>
+            </div>
+          )}
 
-      {/* Main Content Area */}
-      <main className="flex-1 w-full px-4 sm:px-6 lg:px-10 2xl:px-14 py-6 lg:py-8">
-        {!loaded && <div className="text-center py-10">Chargement...</div>}
-        {loaded && saveError && <div className="text-red-500 text-sm mb-2">{saveError}</div>}
-        {loaded && (<>
-        {currentTab === 'home' && (
-          <HomeView
-            item={packagingItem}
-            report={complianceReport}
-            productCount={products.length}
-            language={language}
-            onNavigate={(tab) => setCurrentTab(tab)}
-          />
-        )}
+          {loaded && currentTab === 'home' && (
+            <HomeView item={activeItem} report={complianceReport} productCount={visibleProducts.length} language={language} onNavigate={setCurrentTab} />
+          )}
 
-        {currentTab === 'products' && (
-          <ProductsView
-            products={products}
-            selectedId={selectedProductId}
-            onSelect={(id) => setSelectedProductId(id)}
-            onCreate={handleCreateProduct}
-            onDuplicate={handleDuplicate}
-            onDelete={handleDelete}
-            onImport={handleImport}
-            language={language}
-          />
-        )}
+          {loaded && currentTab === 'products' && (
+            <ProductsView
+              products={visibleProducts}
+              selectedId={activeId}
+              onSelect={setSelectedProductId}
+              onEdit={(id) => { setSelectedProductId(id); setCurrentTab('editor'); }}
+              onCreate={handleCreateProduct}
+              onDuplicate={handleDuplicate}
+              onDelete={handleDelete}
+              onImport={handleImport}
+              language={language}
+            />
+          )}
 
-        {currentTab === 'workflow' && (
-          <Quick5MinWorkflow
-            item={packagingItem}
-            report={complianceReport}
-            language={language}
-            onNavigate={(tab) => setCurrentTab(tab)}
-          />
-        )}
+          {showNoProduct && (
+            <NoProduct language={language} examplesHidden={!showExamples} onCreate={handleCreateProduct} onGoToProducts={() => setCurrentTab('products')} />
+          )}
 
-        {currentTab === 'vault' && (
-          <DocumentVault
-            item={packagingItem}
-            setItem={setPackagingItem}
-            language={language}
-            onProceedToCompliance={() => setCurrentTab('compliance')}
-          />
-        )}
+          {withProduct && currentTab === 'editor' && (
+            <ProductEditor key={activeItem.id} item={activeItem} setItem={setPackagingItem} report={complianceReport} language={language} onNavigate={setCurrentTab} />
+          )}
 
-        {currentTab === 'compliance' && (
-          <ComplianceEngineView
-            item={packagingItem}
-            setItem={setPackagingItem}
-            report={complianceReport}
-            language={language}
-            onProceedToDeclaration={() => setCurrentTab('declaration')}
-          />
-        )}
+          {withProduct && currentTab === 'workflow' && (
+            <Quick5MinWorkflow item={activeItem} report={complianceReport} language={language} onNavigate={(tab) => setCurrentTab(tab)} />
+          )}
 
-        {currentTab === 'gaps' && (
-          <SupplierGapGenerator
-            item={packagingItem}
-            language={language}
-            onProceedToVault={() => setCurrentTab('vault')}
-          />
-        )}
+          {withProduct && currentTab === 'vault' && (
+            <DocumentVault item={activeItem} setItem={setPackagingItem} language={language} onProceedToCompliance={() => setCurrentTab('compliance')} />
+          )}
 
-        {currentTab === 'declaration' && (
-          <DeclarationBuilder
-            key={packagingItem.id}
-            item={packagingItem}
-            setItem={setPackagingItem}
-            report={complianceReport}
-            language={language}
-          />
-        )}
+          {withProduct && currentTab === 'compliance' && (
+            <ComplianceEngineView item={activeItem} setItem={setPackagingItem} report={complianceReport} language={language} onProceedToDeclaration={() => setCurrentTab('declaration')} />
+          )}
 
-        {currentTab === 'roles' && (
-          <RoleResponsibilityGuide
-            item={packagingItem}
-            setItem={setPackagingItem}
-            language={language}
-          />
-        )}
+          {withProduct && currentTab === 'gaps' && (
+            <SupplierGapGenerator item={activeItem} language={language} onProceedToVault={() => setCurrentTab('vault')} />
+          )}
 
-        {currentTab === 'pricing' && (
-          <PricingCalculator
-            language={language}
-            onNavigateToWorkflow={() => setCurrentTab('workflow')}
-            onNavigateToVault={() => setCurrentTab('vault')}
-          />
-        )}
+          {withProduct && currentTab === 'declaration' && (
+            <DeclarationBuilder key={activeItem.id} item={activeItem} setItem={setPackagingItem} report={complianceReport} language={language} />
+          )}
 
-        {currentTab === 'regulatory' && (
-          <RegulatoryExplorer
-            language={language}
-          />
-        )}
-        {currentTab === 'settings' && (
-          <SettingsView
-            showExamples={showExamples}
-            setShowExamples={setShowExamples}
-            language={language}
-          />
-        )}
-        {currentTab === 'guide' && (
-          <UserGuideView
-            language={language}
-          />
-        )}
-        </>)}
-      </main>
+          {withProduct && currentTab === 'roles' && (
+            <RoleResponsibilityGuide item={activeItem} setItem={setPackagingItem} language={language} />
+          )}
 
-      {/* Footer with VisiPilot logo and EUR-Lex references */}
-      <Footer language={language} />
+          {loaded && currentTab === 'pricing' && (
+            <PricingCalculator language={language} onNavigateToWorkflow={() => setCurrentTab('workflow')} onNavigateToVault={() => setCurrentTab('vault')} />
+          )}
+
+          {loaded && currentTab === 'regulatory' && <RegulatoryExplorer language={language} />}
+
+          {loaded && currentTab === 'settings' && (
+            <SettingsView
+              showExamples={showExamples}
+              setShowExamples={setShowExamples}
+              exampleCount={exampleCount}
+              onRemoveExamples={handleRemoveExamples}
+              onRestoreExamples={handleRestoreExamples}
+              language={language}
+            />
+          )}
+
+          {loaded && currentTab === 'guide' && <UserGuideView language={language} />}
+        </main>
+
+        {/* Footer with VisiPilot logo and EUR-Lex references */}
+        <Footer language={language} />
       </AppShell>
     </div>
   );

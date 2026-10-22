@@ -102,7 +102,7 @@ export const Quick5MinWorkflow: React.FC<Quick5MinWorkflowProps> = ({
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <div className="h-[2px] w-8 bg-[#F97316]" />
-              <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
                 POWER PPWR WORKFLOW · 5 MINUTES
               </span>
             </div>
@@ -154,15 +154,15 @@ export const Quick5MinWorkflow: React.FC<Quick5MinWorkflowProps> = ({
                       {step.num}
                     </span>
                     {step.isDone ? (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                      <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
                     ) : (
-                      <span className="text-[10px] font-mono text-slate-400">À faire</span>
+                      <span className="text-[10px] font-mono text-slate-600 dark:text-slate-400">À faire</span>
                     )}
                   </div>
-                  <h4 className="text-xs font-bold dark:text-white text-slate-900 leading-snug">
+                  <h2 className="text-xs font-bold dark:text-white text-slate-900 leading-snug">
                     {language === 'fr' ? step.titleFr : step.titleEn}
-                  </h4>
-                  <p className="text-[11px] dark:text-slate-400 text-slate-500 mt-1 line-clamp-2">
+                  </h2>
+                  <p className="text-[11px] dark:text-slate-400 text-slate-600 mt-1 line-clamp-2">
                     {language === 'fr' ? step.descFr : step.descEn}
                   </p>
                 </div>
@@ -175,11 +175,11 @@ export const Quick5MinWorkflow: React.FC<Quick5MinWorkflowProps> = ({
       {/* Power PPWR 4-Status Assessment Strip */}
       <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-5 shadow-xs transition-colors space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold dark:text-white text-slate-900 flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-[#8B5CF6]" />
+          <h2 className="text-sm font-bold dark:text-white text-slate-900 flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
             <span>{language === 'fr' ? 'Matrice Power PPWR de Qualification des Composants' : 'Power PPWR Component Qualification Matrix'}</span>
-          </h3>
-          <span className="text-xs font-mono text-slate-500">SKU: {item.sku}</span>
+          </h2>
+          <span className="text-xs font-mono text-slate-600 dark:text-slate-400">SKU: {item.sku}</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
@@ -194,7 +194,7 @@ export const Quick5MinWorkflow: React.FC<Quick5MinWorkflowProps> = ({
           </div>
 
           <div className="p-3 rounded-lg dark:bg-amber-950/20 bg-amber-50 border border-amber-300 dark:border-amber-800/40 space-y-1">
-            <span className="font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+            <span className="font-bold text-amber-800 dark:text-amber-400 flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-amber-500" />
               <span>{t.statuses.incomplete}</span>
             </span>
@@ -228,13 +228,13 @@ export const Quick5MinWorkflow: React.FC<Quick5MinWorkflowProps> = ({
       {/* ROI & Savings Link Banner */}
       <div className="flex flex-col sm:flex-row items-center justify-between p-5 rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white gap-4 shadow-xs transition-colors">
         <div className="flex items-center gap-3.5">
-          <div className="p-2.5 rounded-xl bg-[#F97316]/10 text-[#F97316] shrink-0">
+          <div className="p-2.5 rounded-xl bg-[#F97316]/10 text-[#9A3412] dark:text-[#FB923C] shrink-0">
             <Calculator className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="text-xs sm:text-sm font-bold dark:text-white text-slate-900">
+            <h3 className="text-xs sm:text-sm font-bold dark:text-white text-slate-900">
               {language === 'fr' ? 'Calculez le ROI et les économies de votre portefeuille emballage' : 'Calculate ROI & savings for your packaging portfolio'}
-            </h4>
+            </h3>
             <p className="text-[11px] sm:text-xs dark:text-slate-400 text-slate-600 mt-0.5">
               {language === 'fr' ? 'Comparez les coûts de saisie manuelle et des cabinets externes avec les forfaits transparents Power PPWR.' : 'Compare traditional manual audit and consultant expenses against transparent Power PPWR plans.'}
             </p>

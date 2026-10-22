@@ -6,8 +6,8 @@ import { ActiveTab } from './Navbar';
 import { ArrowRight, CheckCircle2, FileText, Mail, Package, ShieldCheck, Zap } from 'lucide-react';
 
 interface Props {
-  item: PackagingItem;
-  report: ComplianceReport;
+  item: PackagingItem | null;
+  report: ComplianceReport | null;
   productCount: number;
   language: Language;
   onNavigate: (tab: ActiveTab) => void;
@@ -15,7 +15,7 @@ interface Props {
 
 const STATUS_STYLES: Record<ComplianceStatus, { dot: string; badge: string; border: string }> = {
   compliant: { dot: 'bg-emerald-500', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/30', border: 'border-l-emerald-500' },
-  incomplete: { dot: 'bg-amber-500', badge: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/30', border: 'border-l-amber-500' },
+  incomplete: { dot: 'bg-amber-500', badge: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/30', border: 'border-l-amber-500' },
   critical: { dot: 'bg-red-500', badge: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/30', border: 'border-l-red-500' },
   missing: { dot: 'bg-slate-400', badge: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-500/10 dark:text-slate-300 dark:border-slate-500/30', border: 'border-l-slate-400' },
 };
@@ -24,7 +24,7 @@ export const HomeView: React.FC<Props> = ({ item, report, productCount, language
   const fr = language === 'fr';
   const t = translations[language];
   const statusLabel = (s: ComplianceStatus) => (t.compliance as Record<string, string>)[s] || s;
-  const overall = STATUS_STYLES[report.overallStatus];
+  const overall = STATUS_STYLES[report ? report.overallStatus : 'missing'];
 
   const steps: { tab: ActiveTab; icon: React.ComponentType<{ className?: string }>; title: string; text: string }[] = [
     {
@@ -55,7 +55,7 @@ export const HomeView: React.FC<Props> = ({ item, report, productCount, language
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:gap-6">
         <div className="xl:col-span-2 rounded-2xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-6 lg:p-8 flex flex-col justify-between gap-6">
           <div className="space-y-3">
-            <span className="inline-block text-[11px] font-mono font-bold bg-[#F97316]/10 text-[#F97316] border border-[#F97316]/30 px-2 py-0.5 rounded">
+            <span className="inline-block text-[11px] font-mono font-bold bg-[#F97316]/10 text-[#9A3412] dark:text-[#FB923C] border border-[#F97316]/30 px-2 py-0.5 rounded">
               {fr ? 'Règlement (UE) 2025/40' : 'Regulation (EU) 2025/40'}
             </span>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight dark:text-white text-slate-900">
@@ -79,38 +79,46 @@ export const HomeView: React.FC<Props> = ({ item, report, productCount, language
 
         <div className={`rounded-2xl border border-l-4 ${overall.border} dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-6 flex flex-col gap-4`}>
           <div className="flex items-center justify-between gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider dark:text-slate-400 text-slate-500">{fr ? 'Produit en cours' : 'Current product'}</span>
-            <span className="flex items-center gap-1.5 text-xs dark:text-slate-400 text-slate-500">
+            <span className="text-[11px] font-bold uppercase tracking-wider dark:text-slate-400 text-slate-600">{fr ? 'Produit en cours' : 'Current product'}</span>
+            <span className="flex items-center gap-1.5 text-xs dark:text-slate-400 text-slate-600">
               <Package className="h-3.5 w-3.5" />
               {productCount} {fr ? (productCount > 1 ? 'produits' : 'produit') : (productCount > 1 ? 'products' : 'product')}
             </span>
           </div>
-          <div className="min-w-0">
-            <div className="text-lg font-bold dark:text-white text-slate-900 break-words">{item.name}</div>
-            <div className="text-xs font-mono dark:text-slate-400 text-slate-500 mt-0.5">{item.sku}</div>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className={`inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold rounded-full border ${overall.badge}`}>
-              <span className={`h-2 w-2 rounded-full ${overall.dot}`} aria-hidden="true" />
-              {statusLabel(report.overallStatus)}
-            </span>
-            <span className="text-xs font-mono dark:text-slate-300 text-slate-700">
-              {fr ? 'Recyclabilité' : 'Recyclability'} <strong>{report.recyclabilityGrade}</strong> · {report.recyclabilityScore}%
-            </span>
-          </div>
+          {item && report ? (
+            <>
+              <div className="min-w-0">
+                <div className="text-lg font-bold dark:text-white text-slate-900 break-words">{item.name}</div>
+                <div className="text-xs font-mono dark:text-slate-400 text-slate-600 mt-0.5">{item.sku}</div>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <span className={`inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold rounded-full border ${overall.badge}`}>
+                  <span className={`h-2 w-2 rounded-full ${overall.dot}`} aria-hidden="true" />
+                  {statusLabel(report.overallStatus)}
+                </span>
+                <span className="text-xs font-mono dark:text-slate-300 text-slate-700">
+                  {fr ? 'Recyclabilité' : 'Recyclability'} <strong>{report.recyclabilityGrade}</strong> · {report.recyclabilityScore}%
+                </span>
+              </div>
+            </>
+          ) : (
+            <p className="text-sm dark:text-slate-300 text-slate-600">
+              {fr ? 'Aucun produit sélectionné. Créez-en un pour commencer.' : 'No product selected. Create one to get started.'}
+            </p>
+          )}
           <button
             type="button"
-            onClick={() => onNavigate('compliance')}
+            onClick={() => onNavigate(item ? 'compliance' : 'products')}
             className="mt-auto self-start inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-300 hover:underline"
           >
-            {fr ? 'Voir l\'audit détaillé' : 'View detailed audit'} <ArrowRight className="h-4 w-4" />
+            {item ? (fr ? 'Voir l\'audit détaillé' : 'View detailed audit') : (fr ? 'Aller à Mes produits' : 'Go to My products')} <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </section>
 
       {/* Steps */}
       <section aria-labelledby="home-steps">
-        <h2 id="home-steps" className="text-sm font-bold uppercase tracking-wider dark:text-slate-400 text-slate-500 mb-3">
+        <h2 id="home-steps" className="text-sm font-bold uppercase tracking-wider dark:text-slate-400 text-slate-600 mb-3">
           {fr ? 'Les 5 étapes du dossier' : 'The 5 dossier steps'}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-3 lg:gap-4">
@@ -125,9 +133,9 @@ export const HomeView: React.FC<Props> = ({ item, report, productCount, language
               >
                 <div className="flex items-center justify-between">
                   <span className="flex h-9 w-9 items-center justify-center rounded-lg dark:bg-slate-800 bg-slate-100">
-                    <Icon className="h-4 w-4 text-[#F97316]" />
+                    <Icon className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C]" />
                   </span>
-                  <span className="text-xs font-mono font-bold dark:text-slate-500 text-slate-400">0{i + 1}</span>
+                  <span className="text-xs font-mono font-bold dark:text-slate-400 text-slate-600">0{i + 1}</span>
                 </div>
                 <div className="mt-3 text-sm font-bold dark:text-white text-slate-900">{s.title}</div>
                 <p className="mt-1 text-xs dark:text-slate-400 text-slate-600 leading-relaxed">{s.text}</p>
@@ -138,8 +146,9 @@ export const HomeView: React.FC<Props> = ({ item, report, productCount, language
       </section>
 
       {/* Article status */}
+      {report && (
       <section aria-labelledby="home-articles">
-        <h2 id="home-articles" className="text-sm font-bold uppercase tracking-wider dark:text-slate-400 text-slate-500 mb-3">
+        <h2 id="home-articles" className="text-sm font-bold uppercase tracking-wider dark:text-slate-400 text-slate-600 mb-3">
           {fr ? 'État par article' : 'Status by article'}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-4">
@@ -166,8 +175,9 @@ export const HomeView: React.FC<Props> = ({ item, report, productCount, language
           })}
         </div>
       </section>
+      )}
 
-      <div className="text-[11px] dark:text-slate-500 text-slate-500 space-y-1 pt-2">
+      <div className="text-[11px] dark:text-slate-400 text-slate-600 space-y-1 pt-2">
         <div>{RULES_VERSION}</div>
         <div>{DISCLAIMER}</div>
       </div>

@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ language }) => {
   const t = translations[language];
 
   return (
-    <footer className="border-t dark:border-slate-800/80 border-slate-200 dark:bg-[#0B1120] bg-white py-8 text-xs dark:text-slate-400 text-slate-500 no-print mt-12 transition-colors">
+    <footer className="border-t dark:border-slate-800/80 border-slate-200 dark:bg-[#0B1120] bg-white py-8 text-xs dark:text-slate-400 text-slate-600 no-print mt-12 transition-colors">
       <div className="flex w-full flex-col md:flex-row items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         
         {/* Brand & Legal basis with VisiPilot logo */}
@@ -26,14 +26,14 @@ export const Footer: React.FC<FooterProps> = ({ language }) => {
           </div>
           <div>
             <span className="font-bold dark:text-slate-200 text-slate-800">powerPPWR</span>
-            <span className="mx-1.5 text-slate-400">·</span>
+            <span className="mx-1.5 text-slate-600 dark:text-slate-400">·</span>
             <span>
               {language === 'fr' 
                 ? 'Outil d\'aide logicielle mis à disposition par VisiPilot' 
                 : 'Software assistance tool provided by VisiPilot'}
             </span>
-            <span className="mx-1.5 text-slate-400">·</span>
-            <span className="dark:text-amber-400/90 text-amber-700 font-medium">
+            <span className="mx-1.5 text-slate-600 dark:text-slate-400">·</span>
+            <span className="dark:text-amber-400/90 text-amber-800 font-medium">
               {language === 'fr'
                 ? 'Déclarations sous la responsabilité exclusive du client'
                 : 'Declarations under sole liability of client'}
@@ -51,13 +51,13 @@ export const Footer: React.FC<FooterProps> = ({ language }) => {
           >
             {language === 'fr' ? 'Wiki VisiPilot & Portail Réglementaire' : 'VisiPilot Wiki & Regulatory Portal'}
           </a>
-          <span className="text-slate-500">
+          <span className="text-slate-600 dark:text-slate-400">
             {language === 'fr' ? 'Mis à jour régulièrement pour une conformité totale.' : 'Regularly updated for full compliance.'}
           </span>
         </div>
 
       </div>
-      <div className="px-4 sm:px-6 lg:px-8 mt-4 text-[10px] text-slate-500">
+      <div className="px-4 sm:px-6 lg:px-8 mt-4 text-[10px] text-slate-600 dark:text-slate-400">
         <div>{RULES_VERSION}</div>
         <div>{DISCLAIMER}</div>
       </div>

@@ -76,7 +76,7 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
       <div className="border-b dark:border-slate-800 border-slate-200 pb-5">
         <div className="flex items-center gap-2 mb-1.5">
           <div className="h-[2px] w-8 bg-[#F97316]" />
-          <span className="text-xs font-mono uppercase tracking-widest text-[#F97316] font-bold">
+          <span className="text-xs font-mono uppercase tracking-widest text-[#C2410C] dark:text-[#FB923C] font-bold">
             EUROPEAN REGULATORY REPOSITORY
           </span>
         </div>
@@ -84,7 +84,7 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
           <h1 className="font-display text-2xl font-extrabold tracking-tight dark:text-white text-slate-900">
             {t.regulatory.title}
           </h1>
-          <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-500 dark:text-indigo-400 px-2 py-0.5 rounded font-mono">
+          <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-700 dark:text-indigo-400 px-2 py-0.5 rounded font-mono">
             Règlement (UE) 2025/40
           </span>
         </div>
@@ -96,13 +96,13 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
       {/* Enforcement Timeline */}
       <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white p-6 shadow-xs space-y-4 transition-colors">
         <h2 className="text-base font-bold dark:text-white text-slate-900 flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-[#F97316]" />
+          <Calendar className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C]" />
           <span>{t.regulatory.timelineTitle}</span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
           <div className="p-4 rounded-lg dark:bg-slate-900 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-2">
-            <span className="text-xs font-mono font-bold text-[#8B5CF6]">12 FÉVRIER 2025</span>
+            <span className="text-xs font-mono font-bold text-[#6D28D9] dark:text-[#A78BFA]">12 FÉVRIER 2025</span>
             <h3 className="text-sm font-bold dark:text-slate-200 text-slate-800">
               {language === 'fr' ? 'Entrée en vigueur officielle' : 'Official Entry into Force'}
             </h3>
@@ -112,7 +112,7 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
           </div>
 
           <div className="p-4 rounded-lg dark:bg-slate-900 bg-amber-50/70 border dark:border-[#F97316]/50 border-amber-300 space-y-2 relative">
-            <span className="text-xs font-mono font-bold text-[#F97316]">12 AOÛT 2026 (Jalon Clé)</span>
+            <span className="text-xs font-mono font-bold text-[#C2410C] dark:text-[#FB923C]">12 AOÛT 2026 (Jalon Clé)</span>
             <h3 className="text-sm font-bold dark:text-slate-200 text-slate-800">
               {language === 'fr' ? 'Application Générale' : 'General Application'}
             </h3>
@@ -122,7 +122,7 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
           </div>
 
           <div className="p-4 rounded-lg dark:bg-slate-900 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-2">
-            <span className="text-xs font-mono font-bold text-emerald-500">1er JANVIER 2030</span>
+            <span className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400">1er JANVIER 2030</span>
             <h3 className="text-sm font-bold dark:text-slate-200 text-slate-800">
               {language === 'fr' ? 'Seuils Contraignants' : 'Binding Quotas'}
             </h3>
@@ -132,7 +132,7 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
           </div>
 
           <div className="p-4 rounded-lg dark:bg-slate-900 bg-slate-50 border dark:border-slate-800 border-slate-200 space-y-2">
-            <span className="text-xs font-mono font-bold text-cyan-500">1er JANVIER 2040</span>
+            <span className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400">1er JANVIER 2040</span>
             <h3 className="text-sm font-bold dark:text-slate-200 text-slate-800">
               {language === 'fr' ? 'Économie Circulaire Avancée' : 'Advanced Circularity'}
             </h3>
@@ -146,7 +146,7 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
       {/* Official Legal Articles Grid */}
       <div className="space-y-4">
         <h2 className="text-base font-bold dark:text-white text-slate-900 flex items-center gap-2">
-          <BookOpen className="h-4 w-4 text-[#8B5CF6]" />
+          <BookOpen className="h-4 w-4 text-[#6D28D9] dark:text-[#A78BFA]" />
           <span>{t.regulatory.articlesList}</span>
         </h2>
 
@@ -154,10 +154,10 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
           {articles.map((art) => (
             <div key={art.num} className="p-5 rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-[#111827] bg-white space-y-2 shadow-xs transition-colors">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#F97316] bg-[#F97316]/10 border border-[#F97316]/30 px-2 py-0.5 rounded">
+                <span className="text-xs font-mono font-bold text-[#9A3412] dark:text-[#FB923C] bg-[#F97316]/10 border border-[#F97316]/30 px-2 py-0.5 rounded">
                   {art.num}
                 </span>
-                <span className="text-[11px] font-mono dark:text-slate-400 text-slate-500">
+                <span className="text-[11px] font-mono dark:text-slate-400 text-slate-600">
                   {art.timing}
                 </span>
               </div>
@@ -175,7 +175,7 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
       {/* External Verified Sources & Reference Link */}
       <div className="rounded-xl border dark:border-slate-800 border-slate-200 dark:bg-slate-900/60 bg-white p-5 space-y-3 transition-colors shadow-xs">
         <h3 className="text-sm font-bold dark:text-white text-slate-900 flex items-center gap-2">
-          <ExternalLink className="h-4 w-4 text-[#F97316]" />
+          <ExternalLink className="h-4 w-4 text-[#C2410C] dark:text-[#FB923C]" />
           <span>{t.regulatory.officialSources}</span>
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -187,9 +187,9 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
           >
             <div>
               <span className="font-bold block dark:text-slate-200 text-slate-900">Journal Officiel de l'UE — EUR-Lex</span>
-              <span className="text-[11px] dark:text-slate-400 text-slate-500">Règlement (UE) 2025/40 du Parlement Européen</span>
+              <span className="text-[11px] dark:text-slate-400 text-slate-600">Règlement (UE) 2025/40 du Parlement Européen</span>
             </div>
-            <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-indigo-500 transition-colors" />
+            <ExternalLink className="h-4 w-4 text-slate-600 dark:text-slate-400 group-hover:text-indigo-500 transition-colors" />
           </a>
 
           <a
@@ -200,9 +200,9 @@ export const RegulatoryExplorer: React.FC<RegulatoryExplorerProps> = ({ language
           >
             <div>
               <span className="font-bold block dark:text-slate-200 text-slate-900">Visitune PPWR Reference</span>
-              <span className="text-[11px] dark:text-slate-400 text-slate-500">visitune.github.io/PPWR/#/fr/home</span>
+              <span className="text-[11px] dark:text-slate-400 text-slate-600">visitune.github.io/PPWR/#/fr/home</span>
             </div>
-            <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-indigo-500 transition-colors" />
+            <ExternalLink className="h-4 w-4 text-slate-600 dark:text-slate-400 group-hover:text-indigo-500 transition-colors" />
           </a>
         </div>
       </div>
